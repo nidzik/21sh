@@ -1,9 +1,17 @@
 #include "mini.h"
 
 /*
- ** ft_add_loal_var(), take name and value of new variable
- ** if a variable is already name in struct, edit value
- */
+** Check for call to local var functions()
+** After get_next_line() of prompt line :
+** 		- split to ' ' charactere
+**		- if first strcmp(split[0], 'echo'), echo all split line
+**		- if strchr(split[0], '='), create variable 
+*/
+
+/*
+** ft_add_loal_var(), take name and value of new variable
+** if a variable is already name in struct, edit value
+*/
 void				ft_add_local_var(t_group *group, char *name, char *value)
 {
 	t_loc_val		*loc_var;
@@ -36,10 +44,10 @@ void				ft_add_local_var(t_group *group, char *name, char *value)
 ** ft_del_loc_var(), take variable name in arg, and check if
 ** it exist, if so, delete it
 */
-void		ft_del_loc_var(t_group *group, char *name)
+void				ft_del_loc_var(t_group *group, char *name)
 {
-	t_loc_var	*prev;
-	t_loc_var	*loc_val;
+	t_loc_var		*prev;
+	t_loc_var		*loc_val;
 
 	prev = NULL;
 	loc_var = group->loc_var;
@@ -54,5 +62,27 @@ void		ft_del_loc_var(t_group *group, char *name)
 		}
 		prev = loc_val;
 		loc_val = loc_val->next;
+	}
+}
+
+void			ft_check_built_in(char *lines, t_build *built, t_group *group)
+{
+	char		*split;
+	char		*split2;
+
+	split = ft_strsplit(lines, ' ');
+	if (ft_strncmp(*split, ft_strlen(*split++)), "echo")
+	{
+		while (*split++ != 0)
+			ft_putstr(*split);
+	}
+	else if (ft_strnstr(*split, "=", ft_strlen(*split)) && **split != '=')
+	{
+		split2 = ft_strsplit(*split, '=');
+		// check if env var
+		ft_add_local_var(group, *split2++, *split2);
+	}
+	else if ()
+	{
 	}
 }
