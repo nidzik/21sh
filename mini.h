@@ -32,5 +32,6 @@ void		ft_stock_env(t_env *list_env, t_path *path, char **envp);
 void		ft_stock_path(t_path *path, char *path_value);
 void		ft_setenv(t_env *env, char *name, char *value);
 void		ft_unsetenv(t_env *env, char *name);
+void		ft_print_env(t_env *list_env);
 
 #endif
