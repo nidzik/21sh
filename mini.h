@@ -2,6 +2,7 @@
 # define MINI_H
 
 #include "libft/libft.h"
+#include "get_next_line.h"
 #include <dirent.h>
 
 int         get_next_line(const int fd, char **line);

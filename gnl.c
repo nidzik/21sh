@@ -6,13 +6,13 @@
 /*   By: nbeny <nbeny@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/20 09:56:47 by nbeny             #+#    #+#             */
-/*   Updated: 2017/05/20 09:56:52 by nbeny            ###   ########.fr       */
+/*   Updated: 2017/08/19 13:58:07 by bbichero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "libft.h"
-#include "mini.h"
+#include "libft/libft.h"
+
 static int		ft_makeline(char *lst, char **line)
 {
 	int		i;
@@ -37,10 +37,10 @@ static int		ft_makeline(char *lst, char **line)
 	return (0);
 }
 
-static t_lib	*ft_find_fd(t_lib *rstr, int fd)
+static t_list	*ft_find_fd(t_list *rstr, int fd)
 {
-	t_lib	*new;
-	t_lib	*tmp;
+	t_list	*new;
+	t_list	*tmp;
 
 	tmp = NULL;
 	if (rstr == NULL)
@@ -66,7 +66,7 @@ static t_lib	*ft_find_fd(t_lib *rstr, int fd)
 	return (new);
 }
 
-static int		ft_stock(t_lib *rstr, int fd)
+static int		ft_stock(t_list *rstr, int fd)
 {
 	char	*buff;
 	char	*stop;
@@ -93,8 +93,8 @@ static int		ft_stock(t_lib *rstr, int fd)
 
 int				get_next_line(const int fd, char **line)
 {
-	static t_lib	*rstr = NULL;
-	t_lib			*saverstr;
+	static t_list	*rstr = NULL;
+	t_list			*saverstr;
 
 	saverstr = NULL;
 	if (fd < 0 || !line || BUFF_SIZE <= 0)
