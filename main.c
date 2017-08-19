@@ -5,7 +5,53 @@
 #include <fcntl.h>
 #include "mini.h"
 
-char *ft_check_cmd(char *cmd, t_path *path)
+void ft_cd()
+{
+	ft_putendl("CD");
+}
+
+static char *ft_check_built(char *cmd, t_built *built)
+{
+	int i;
+
+	i = 0;
+	while (i < 6 )
+	{
+		ft_putendl("ici");
+		if (ft_strncmp(cmd, built->list_built_in[i], ft_strlen(built->list_built_in[i])) == 0)
+		{
+			(*built->list_fct[i])();
+			return (cmd);
+
+		}
+					i++;
+	}
+	return (NULL);
+}
+
+static t_built *ft_init_built_in()
+{
+	static t_built *built;
+	int i;
+
+	built = malloc(sizeof(t_built));
+	built->list_built_in[0] = NULL;
+	i = 0;
+	if (built->list_built_in[0] == NULL)
+	{
+		built->list_built_in[0] = "cd";
+		built->list_fct[0] = ft_cd;		
+		built->list_built_in[1] = "exit";
+		built->list_built_in[2] = "env";
+		built->list_built_in[3] = "setenv";
+		built->list_built_in[4] = "unsetenv";
+		built->list_built_in[5] = "echo";
+		built->list_built_in[6] = NULL;
+	}
+	return (built);
+}
+
+static char *ft_check_cmd(char *cmd, t_path *path)
 {
 	struct stat sta;
 	int status;
@@ -42,28 +88,25 @@ int main(int ac, char **av, char **env)
 	pid_t father;
 	char *lines;
 	int status;
-	char **myenv = env;
+	//	char **myenv = env;
 	t_env           *list_env;
 	t_path          *path;
 	char *path_cmd;
 	char ** split;
-	char cmds[2][10] = {
-		{"set"},
-		{"unset"}
-	};
-
-		
+	t_built *built;
 	ac = 0;
 	(void)av;
 	list_env = (t_env *)malloc(sizeof(t_env));
 	path = (t_path *)malloc(sizeof(t_path));
 	ft_stock_env(list_env, path, env);
-	
+		built = ft_init_built_in();
 	status =  0;
 	ft_putstr("$>");
 	while (get_next_line(0, &lines) > 0)
 		{
-			if (lines != NULL && (path_cmd = ft_check_cmd(lines, path)) != NULL)
+			if (ft_check_built(lines, built) != NULL)
+				;
+			else if (( (path_cmd = ft_check_cmd(lines, path)) != NULL))
 			{
 				father = fork();
 				if (father > 0)
