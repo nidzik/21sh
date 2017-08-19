@@ -1,6 +1,25 @@
 #include "mini.h"
 
 /*
+** ft_print_env(), list all environment variables form t_env
+** linked list
+*/
+
+void		ft_print_env(t_env *list_env)
+{
+	t_env	*env;
+
+	env = list_env;
+	while (env)
+	{
+		ft_putstr(env->name);
+		ft_putchar('=');
+		ft_putendl(env->value);
+		env = env->next;
+	}
+}
+
+/*
 ** ft_stock_env(), split environment line to name and value
 ** and place them in a chained list, if PATH name is find
 ** go stock path values
