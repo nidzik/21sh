@@ -45,11 +45,8 @@ typedef struct			s_built
 
 void					ft_stock_env(t_env *list_env, t_path *path, char **envp);
 void					ft_stock_path(t_path *path, char *path_value);
-void					ft_setenv(t_env *env, char *name, char *value);
+void					ft_setenv(t_group *g);
 void					ft_unsetenv(t_env *env, char *name);
 void					ft_print_env(t_group *group);
-
-void					ft_add_local_var(t_group *group, char *name, char *value);
-void					ft_del_loc_var(t_group *group, char *name);
 
 #endif

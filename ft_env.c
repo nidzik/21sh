@@ -86,18 +86,19 @@ void		ft_stock_path(t_path *path, char *path_value)
 ** ft_setenv(), permit to add of edit an environment variable
 ** if env variable already exist, var is edited else it created
 */
-void		ft_setenv(t_env *env, char *name, char *value)
+void		ft_setenv(t_group *g)
 {
 	int	set;
 	t_env	*env_list;
 
+	ft_putendl("boh");
 	set = 0;
-	env_list = env;
+	env_list = g->env;
 	while (env_list)
 	{
-		if (ft_strcmp(env_list->name, name) == 0)
+		if (ft_strcmp(env_list->name, g->name) == 0)
 		{
-			env_list->value = value;
+			env_list->value = g->value;
 			set = 1;
 			break ;
 		}
@@ -108,8 +109,8 @@ void		ft_setenv(t_env *env, char *name, char *value)
 	if (set == 0)
 	{
 		env_list->next = (t_env *)malloc(sizeof(t_env));
-		env_list->next->name = name;
-		env_list->next->value = value;
+		env_list->next->name = g->name;
+		env_list->next->value = g->value;
 		env_list->next->next = NULL;
 	}
 }

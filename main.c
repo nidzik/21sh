@@ -10,18 +10,45 @@ void ft_cd(t_group *g)
 	(void)g;
 	ft_putendl("CD");
 }
-
+void ft_error(char *str)
+{
+	ft_putendl(str);
+}
 static char *ft_check_built(char *cmd, t_built *built, t_group *group)
 {
 	int i;
-
+	char **array;
+	
 	i = 0;
+	array = NULL;
+	array = ft_strsplit(cmd, ' ');
 	while (i < 6 )
 	{
 		if (ft_strncmp(cmd, built->list_built_in[i], ft_strlen(built->list_built_in[i])) == 0)
 		{
+			if (i == 3)
+			{
+				if (array[1])
+					group->name = array[1];
+				else
+					ft_error("usage : unsetenv variable");
+				}
+			else if (i == 4)
+				{
+					if (array[1] && array[2])
+						{
+							group->name = array[1];
+							group->value = array[2];
+						}
+					else
+						ft_error("usage : setenv VAR value");
+				}
 			(void)group;
+			ft_putendl(group->name);
+						ft_putendl(group->value);
+			ft_putnbr(i);
 			(*built->list_fct[i])(group);
+			ft_putendl("aft");
 			return (cmd);
 
 		}
@@ -45,8 +72,9 @@ static t_built *ft_init_built_in(t_group *group)
 		built->list_built_in[1] = "exit";
 		built->list_built_in[2] = "env";
 		built->list_fct[2] = ft_print_env;
-		built->list_built_in[3] = "setenv";
-		built->list_built_in[4] = "unsetenv";
+		built->list_built_in[3] = "unsetenv";
+		built->list_built_in[4] = "setenv";
+		built->list_fct[2] = ft_setenv;
 		built->list_built_in[5] = "echo";
 		built->list_built_in[6] = NULL;
 	}
