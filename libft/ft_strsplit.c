@@ -6,7 +6,7 @@
 /*   By: bbichero <bbichero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/03 11:02:01 by bbichero          #+#    #+#             */
-/*   Updated: 2015/03/10 18:07:36 by nidzik           ###   ########.fr       */
+/*   Updated: 2017/08/19 19:13:45 by bbichero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char			**ft_strsplit(const char *s, char c)
 	{
 		while (*s == c && *s)
 			s++;
-		t[j] = ft_strsub((const char *)s, 0, ft_length((const char *)s, c));
+		t[j] = ft_strtrim(ft_strsub((const char *)s, 0, ft_length((const char *)s, c)));
 		if (t[j] == NULL)
 			return (NULL);
 		s = s + ft_length(s, c);
