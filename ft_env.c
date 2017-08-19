@@ -5,11 +5,11 @@
 ** linked list
 */
 
-void		ft_print_env(t_env *list_env)
+void		ft_print_env(t_group * group)
 {
 	t_env	*env;
 
-	env = list_env;
+	env = group->env;
 	while (env)
 	{
 		ft_putstr(env->name);
