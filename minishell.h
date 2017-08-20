@@ -19,7 +19,9 @@ typedef enum			e_cmd_state
 	TO_EXECUTE = 1,
 	SAVE_OUTPUT = 2,
 	SAVE_RESULT = 3,
-	
+	BUILT_IN = 4,
+	LOCAL_VAR = 5,
+	ENV_VAR = 6
 }				t_cmd_state;
 
 /*
@@ -34,7 +36,9 @@ typedef struct			s_parse
 	struct s_parse		*next;
 	struct s_delimitor	*delimitor;
 	char			*command;
-	int				
+	char			*argument;
+	t_cmd_state		cmd_state;
+	
 }				t_parse;
 
 /*
@@ -48,7 +52,7 @@ typedef struct			s_delimitor
 	struct s_delimitor	*next;
 	char			delimitor;
 	char			*contain;
-}				t_delimitor
+}				t_delimitor;
 
 typedef struct			s_loc_var
 {
@@ -88,7 +92,8 @@ typedef struct			s_built
 void					ft_stock_env(t_env *list_env, t_path *path, char **envp);
 void					ft_stock_path(t_path *path, char *path_value);
 void					ft_setenv(t_group *g);
-void					ft_unsetenv(t_env *env, char *name);
-void					ft_print_env(t_group *group);
+void					ft_unsetenv(t_group *g);
+void					ft_print_env(t_group *g);
+int					ft_parse_line(char *line, t_parse *parse);
 
 #endif
