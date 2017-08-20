@@ -27,7 +27,7 @@ CC = gcc
 LIBS = $(LFT)
 INCLUDES = $(INCLUDE) $(LFTIPATH)
 
-BASEFLAGS = -Wall -Wextra
+BASEFLAGS = -Wall -Wextra -Wconversion
 CFLAGS = $(BASEFLAGS) -Werror -O2 -g
 
 LFTCALL = all
@@ -35,7 +35,8 @@ LFTRE = re
 
 SRCSFILES = main.c \
 	ft_env.c \
-	get_next_line.c
+	get_next_line.c \
+	ft_built_in.c
 
 SRC = $(addprefix $(SRCPATH)/,$(SRCSFILES))
 OBJECTS = $(SRC:$(SRCPATH)/%.c=$(OBJPATH)/%.o)
