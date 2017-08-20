@@ -9,11 +9,12 @@ void ft_error(char *str)
 {
 	ft_putendl(str);
 }
+/*
 static char *ft_check_built(char *cmd, t_built *built, t_group *group)
 {
 	int i;
 	char **array;
-	
+
 	i = 0;
 	array = NULL;
 	array = ft_strsplit(cmd, ' ');
@@ -27,31 +28,31 @@ static char *ft_check_built(char *cmd, t_built *built, t_group *group)
 					group->name = array[1];
 				else
 					ft_error("usage : unsetenv variable");
-				}
+			}
 			else if (i == 4)
+			{
+				if (array[1] && array[2])
 				{
-					if (array[1] && array[2])
-						{
-							group->name = array[1];
-							group->value = array[2];
-						}
-					else
-						ft_error("usage : setenv VAR value");
+					group->name = array[1];
+					group->value = array[2];
 				}
+				else
+					ft_error("usage : setenv VAR value");
+			}
 			(void)group;
 			ft_putendl(group->name);
-						ft_putendl(group->value);
+			ft_putendl(group->value);
 			ft_putnbr(i);
 			(*built->list_fct[i])(group);
 			ft_putendl("aft");
 			return (cmd);
 
 		}
-					i++;
+		i++;
 	}
 	return (NULL);
 }
-
+*/
 static t_built *ft_init_built_in(t_group *group)
 {
 	static t_built *built;
@@ -120,6 +121,8 @@ int main(int ac, char **av, char **env)
 	char ** split;
 	t_built *built;
 	t_group *group;
+	t_parse *parse;
+
 	ac = 0;
 	(void)av;
 	list_env = (t_env *)malloc(sizeof(t_env));
@@ -129,14 +132,17 @@ int main(int ac, char **av, char **env)
 	group->env = list_env;
 	group->name = NULL;
 	group->value = NULL;
+	parse = (t_parse *)malloc(sizeof(t_parse));
 	built = ft_init_built_in(group);
 	status =  0;
-	ft_putstr("$>");
+	ft_putstr("$> ");
 	while (get_next_line(0, &lines) > 0)
+	{
+		//if (ft_check_built(lines, built, group) != NULL)
+		//	;
+		if (ft_parse_line(lines, parse) >= 0)
 		{
-			if (ft_check_built(lines, built, group) != NULL)
-				;
-			else if (( (path_cmd = ft_check_cmd(lines, path)) != NULL))
+			if (( (path_cmd = ft_check_cmd(lines, path)) != NULL))
 			{
 				father = fork();
 				if (father > 0)
@@ -153,7 +159,8 @@ int main(int ac, char **av, char **env)
 			}
 			else
 				ft_putendl("command not found");
-			ft_putstr("$>");
 		}
-				return (0);
+		ft_putstr("$> ");
+	}
+	return (0);
 }
