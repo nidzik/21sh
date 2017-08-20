@@ -4,9 +4,51 @@
 #include "libft/libft.h"
 #include "get_next_line.h"
 #include <dirent.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 int         get_next_line(const int fd, char **line);
 int         ft_count_rows(char *name);
+
+typedef enum			e_cmd_state
+{
+	ERROR = 0,
+	TO_EXECUTE = 1,
+	SAVE_OUTPUT = 2,
+	SAVE_RESULT = 3,
+	
+}				t_cmd_state;
+
+/*
+** s_parse struct is use to handle parsing of
+** line read from shell prompt.
+** It stock delimitors, commands to execute,
+** variable set, etc .. All instructions that
+** must be excuted by this program.
+*/
+typedef struct			s_parse
+{
+	struct s_parse		*next;
+	struct s_delimitor	*delimitor;
+	char			*command;
+	int				
+}				t_parse;
+
+/*
+** s_delimitor struct is use to handle multiple
+** delimitors in shell command, by stocking
+** containor between 2 delimitor and list
+** all delimitors in commands.
+*/
+typedef struct			s_delimitor
+{
+	struct s_delimitor	*next;
+	char			delimitor;
+	char			*contain;
+}				t_delimitor
 
 typedef struct			s_loc_var
 {

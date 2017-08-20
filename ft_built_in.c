@@ -1,4 +1,4 @@
-#include "mini.h"
+#include "minishell.h"
 
 /*
 ** Check for call to local var functions()
@@ -65,7 +65,11 @@ void				ft_del_loc_var(t_group *group, char *name)
 	}
 }
 
-void			ft_check_built_in(char *lines, t_build *built, t_group *group)
+/*
+** ft_parse_line(), take the line in parameter
+**
+*/
+void			ft_parse_line(char *lines, t_build *built, t_group *group)
 {
 	char		*split;
 	char		*split2;

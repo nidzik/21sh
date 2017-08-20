@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include "mini.h"
+#include "minishell.h"
 
 void ft_cd(t_group *g)
 {

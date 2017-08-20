@@ -1,4 +1,4 @@
-#include "mini.h"
+#include "minishell.h"
 
 /*
 ** ft_print_env(), list all environment variables form t_env
