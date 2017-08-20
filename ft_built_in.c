@@ -14,7 +14,7 @@
 */
 void				ft_add_local_var(t_group *group, char *name, char *value)
 {
-	t_loc_val		*loc_var;
+	t_loc_var		*loc_var;
 	unsigned int	edit;
 
 	loc_var = group->loc_var;
@@ -33,10 +33,10 @@ void				ft_add_local_var(t_group *group, char *name, char *value)
 	}
 	if (edit == 0)
 	{
-		loc_val->next = (t_loc_var *)malloc(sizeof(t_loc_var));
-		loc_val->next->name = name;
-		loc_val->next->value = value;
-		loc_val->next->next = NULL;
+		loc_var->next = (t_loc_var *)malloc(sizeof(t_loc_var));
+		loc_var->next->name = name;
+		loc_var->next->value = value;
+		loc_var->next->next = NULL;
 	}
 }
 
@@ -47,34 +47,52 @@ void				ft_add_local_var(t_group *group, char *name, char *value)
 void				ft_del_loc_var(t_group *group, char *name)
 {
 	t_loc_var		*prev;
-	t_loc_var		*loc_val;
+	t_loc_var		*loc_var;
 
 	prev = NULL;
 	loc_var = group->loc_var;
-	while (loc_val)
+	while (loc_var)
 	{
-		if (ft_strcmp(loc_val->name, name) == 0)
+		if (ft_strcmp(loc_var->name, name) == 0)
 		{
-			if (loc_val->next)
-				prev->next = loc_val->next;
+			if (loc_var->next)
+				prev->next = loc_var->next;
 			else
 				prev->next = NULL;
 		}
-		prev = loc_val;
-		loc_val = loc_val->next;
+		prev = loc_var;
+		loc_var = loc_var->next;
 	}
 }
 
 /*
-** ft_parse_line(), take the line in parameter
-**
+** ft_parse_line(), take the line from arg (line enter in shell)
+** parse it (detect quote, detect comment, built-in or not, ...)
+** - return -1 if line NULL
+** - return 0 if command can be executed
+** - return 1 if need more read
 */
-void			ft_parse_line(char *lines, t_build *built, t_group *group)
+int			ft_parse_line(char *line, t_parse *parse)
 {
 	char		*split;
-	char		*split2;
+	size_t		i;
 
-	split = ft_strsplit(lines, ' ');
+	//if (ft_strcmp(line, "\n") == 0)
+	if (line[0] == '\0')
+		return (-1);
+	i = ft_strlen(line);
+ 	if (ft_strchr(line, ' ') != NULL)
+		i = ft_strlen(line) - ft_strlen(ft_strchr(line, ' '));
+	else if (ft_strchr(line, '\t') != NULL)
+		i = ft_strlen(line) - ft_strlen(ft_strchr(line, '\t'));
+	split = (char *)malloc(sizeof(i) + 1);
+	parse->delimitor = (t_delimitor *)malloc(sizeof(t_delimitor));
+	parse->next = NULL;
+	if (i != ft_strlen(line))
+	{
+		
+	}
+/*
 	if (ft_strncmp(*split, ft_strlen(*split++)), "echo")
 	{
 		while (*split++ != 0)
@@ -89,4 +107,6 @@ void			ft_parse_line(char *lines, t_build *built, t_group *group)
 	else if ()
 	{
 	}
+*/
+	return (1);
 }
