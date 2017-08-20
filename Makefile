@@ -34,8 +34,8 @@ LFTCALL = all
 LFTRE = re
 
 SRCSFILES = main.c \
-			ft_env.c \
-			gnl.c
+	ft_env.c \
+	get_next_line.c
 
 SRC = $(addprefix $(SRCPATH)/,$(SRCSFILES))
 OBJECTS = $(SRC:$(SRCPATH)/%.c=$(OBJPATH)/%.o)
