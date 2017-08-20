@@ -5,11 +5,11 @@
 ** linked list
 */
 
-void		ft_print_env(t_group * group)
+void		ft_print_env(t_group *g)
 {
 	t_env	*env;
 
-	env = group->env;
+	env = g->env;
 	while (env)
 	{
 		ft_putstr(env->name);
@@ -119,16 +119,16 @@ void		ft_setenv(t_group *g)
 ** ft_unsetenv(), take variable name in arg, and check if
 ** it exist, if so, delete it
 */
-void		ft_unsetenv(t_env *env, char *name)
+void		ft_unsetenv(t_group *g)
 {
 	t_env	*prev;
 	t_env	*env_list;
 
 	prev = NULL;
-	env_list = env;
+	env_list = g->env;
 	while (env_list)
 	{
-		if (ft_strcmp(env_list->name, name) == 0)
+		if (ft_strcmp(env_list->name, g->name) == 0)
 		{
 			if (env_list->next)
 				prev->next = env_list->next;
