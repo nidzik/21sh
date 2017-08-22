@@ -78,7 +78,8 @@ int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				*ft_strtrim(const char *s);
 char				**ft_strsplitwith(char *str, char *seps, size_t *count);
-
+char				**ft_split(char const *s);
+char				**ft_split_char(char const *s, char c);
 void				*ft_memalloc(size_t size);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memset(void *b, int c, size_t len);

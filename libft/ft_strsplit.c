@@ -62,7 +62,7 @@ char			**ft_strsplit(const char *s, char c)
 	{
 		while (*s == c && *s)
 			s++;
-		t[j] = ft_strtrim(ft_strsub((const char *)s, 0, ft_length((const char *)s, c)));
+		t[j] = (ft_strsub((const char *)s, 0, ft_length((const char *)s, c)));
 		if (t[j] == NULL)
 			return (NULL);
 		s = s + ft_length(s, c);
