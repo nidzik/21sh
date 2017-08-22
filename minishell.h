@@ -35,6 +35,7 @@ typedef struct			s_parse
 {
 	struct s_parse		*next;
 	struct s_delimitor	*delimitor;
+	char			*line;
 	char			*command;
 	char			*argument;
 	t_cmd_state		cmd_state;
@@ -44,14 +45,16 @@ typedef struct			s_parse
 /*
 ** s_delimitor struct is use to handle multiple
 ** delimitors in shell command, by stocking
-** containor between 2 delimitor and list
-** all delimitors in commands.
+** each number of char containor in every lines.
 */
 typedef struct			s_delimitor
 {
-	struct s_delimitor	*next;
-	char			delimitor;
-	char			*contain;
+	int			simple_q;
+	int			double_q;
+	int			bracie_l;
+	int			bracie_r;
+	int			parent_l;
+	int			parent_r;
 }				t_delimitor;
 
 typedef struct			s_loc_var
@@ -94,9 +97,13 @@ void					ft_stock_path(t_path *path, char *path_value);
 void					ft_setenv(t_group *g);
 void					ft_unsetenv(t_group *g);
 void					ft_print_env(t_group *g);
-int						ft_parse_line(char *line, t_parse *parse);
+
+int					ft_parse_line(char *line, t_parse *parse);
+int					ft_stock_delimitors(char *line, t_parse *parse);
+t_parse					*ft_init_parse_struct(void);
+
 void					ft_exit(t_group *g);
 void					ft_free_env(t_env *e);
 void					ft_free_tabstr(char **tstr);
-void    ft_free_path(t_path *e);
+void					ft_free_path(t_path *e);
 #endif
