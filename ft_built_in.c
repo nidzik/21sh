@@ -66,6 +66,59 @@ void				ft_del_loc_var(t_group *group, char *name)
 }
 
 /*
+** ft_stock_delimitors(), in line, look for delimitor like
+** ', ", (, ), {, }, [, ] if an even number of double or simple
+** quote is detected, return 1 to prevent for new line
+*/
+
+int			ft_stock_delimitors(char *line, t_parse *parse)
+{
+	char		*string;
+
+	ft_putendl("Enter in ft_stock_delimitor");
+	string = line;
+	while (*string)
+	{
+		ft_putchar(*string);
+		ft_putchar('\n');
+		if ((string = ft_strchr(string, '\'')) != NULL)
+			parse->delimitor->simple_q += 1;
+		else if ((string = ft_strchr(string, '\"')) != NULL)
+			parse->delimitor->double_q += 1;
+	//	*string++;
+	}
+	ft_putstr("simple quote :");
+	ft_putnbr(parse->delimitor->simple_q);
+	ft_putchar('\n');
+	ft_putstr("double quote :");
+	ft_putnbr(parse->delimitor->double_q);
+	ft_putchar('\n');
+	if ((parse->delimitor->simple_q % 2) != 0 ||
+					(parse->delimitor->double_q % 2) != 0)
+		return (1);
+	return (0);
+}
+
+/*
+** ft_need_more_read(), check if 2 last charactere aren't '&&'
+** or last '|' and call ft_stock_delimitors() to save every
+** delimitors in line.
+** return (1) if a read is forbidden or return (0).
+*/
+
+int			ft_need_more_read(char *line, t_parse *parse)
+{
+	ft_putendl("Enter in ft_need_more_read()");
+	if (line[ft_strlen(line) - 1] == '&' && line[ft_strlen(line) - 2] == '&')
+		return (1);
+	if (line[ft_strlen(line) - 1] == '|')
+		return (1);
+	if (ft_stock_delimitors(line, parse) == 1)
+		return (1);
+	return (0);
+}
+
+/*
 ** ft_parse_line(), take the line from arg (line enter in shell)
 ** parse it (detect quote, detect comment, built-in or not, ...)
 ** - return -1 if line NULL
@@ -74,23 +127,29 @@ void				ft_del_loc_var(t_group *group, char *name)
 */
 int			ft_parse_line(char *line, t_parse *parse)
 {
-	char		*split;
+	//char		**split;
 	size_t		i;
 
-	//if (ft_strcmp(line, "\n") == 0)
-	if (line[0] == '\0')
+	if (line[0] == '\0' || line == NULL)
 		return (-1);
+	// detect 2nd line wanted
+	if (ft_need_more_read(line, parse) == 1)
+		return (1);
 	i = ft_strlen(line);
+	// if line contain space of tabulation
  	if (ft_strchr(line, ' ') != NULL)
 		i = ft_strlen(line) - ft_strlen(ft_strchr(line, ' '));
 	else if (ft_strchr(line, '\t') != NULL)
 		i = ft_strlen(line) - ft_strlen(ft_strchr(line, '\t'));
-	split = (char *)malloc(sizeof(i) + 1);
-	parse->delimitor = (t_delimitor *)malloc(sizeof(t_delimitor));
-	parse->next = NULL;
+	//split = (char *)malloc(sizeof(i) + 1);
+	// if find space
 	if (i != ft_strlen(line))
 	{
-		
+			
+	}
+	else // if no space in command
+	{
+		// look for '=' for local var
 	}
 /*
 	if (ft_strncmp(*split, ft_strlen(*split++)), "echo")
@@ -100,7 +159,7 @@ int			ft_parse_line(char *line, t_parse *parse)
 	}
 	else if (ft_strnstr(*split, "=", ft_strlen(*split)) && **split != '=')
 	{
-		split2 = ft_split(*split, '=');
+		split2 = ft_strsplit(*split, '=');
 		// check if env var
 		ft_add_local_var(group, *split2++, *split2);
 	}
