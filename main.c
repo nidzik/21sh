@@ -11,6 +11,7 @@ void ft_error(char *str)
 		ft_putendl(str);
 }
 
+/*
 static char *ft_check_built(char *cmd, t_built *built, t_group *group)
 {
 	int i;
@@ -49,7 +50,7 @@ static char *ft_check_built(char *cmd, t_built *built, t_group *group)
 	}
 	ft_free_tabstr(array);
 	return (NULL);
-}
+}*/
 
 static t_built *ft_init_built_in(t_group *group)
 {
@@ -148,9 +149,7 @@ int main(int ac, char **av, char **env)
 	ft_putstr("$> ");
 	while (get_next_line(0, &lines) > 0)
 	{
-				if (ft_check_built(lines, built, group) != NULL)
-			;
-		else if (ft_parse_line(lines, parse) >= 0)
+		if ((ret = ft_parse_line(ft_strtrim(lines), parse)) == 0)
 		{
 			if (( (path_cmd = find_cmd_in_path(lines, path)) != NULL))
 			{
@@ -165,21 +164,18 @@ int main(int ac, char **av, char **env)
 					split =  ft_split(ft_strtrim(lines));
 					execve(path_cmd, split++, env);
 					ft_free_tabstr(split);
-					//					ft_strdel(&path_cmd);
-					//free(split);
-					//split = NULL;
 				}
 			}
 			else
 				ft_putendl("command not found");
 			ft_strdel(&lines);
-			}
-					
-		ft_putstr("$> ");
+			ft_putstr("$> ");	
+		}
+		else if (ret == 1)
+			ft_putstr("> ");
+		else
+			ft_putstr("$> ");				
 	}
-	
-	//ft_free_path(path);
-	//	free(path);
-		ft_exit(group);
+	ft_exit(group);
 	return (0);
 }
