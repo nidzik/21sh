@@ -100,7 +100,7 @@ int			ft_parse_line(char *line, t_parse *parse)
 	}
 	else if (ft_strnstr(*split, "=", ft_strlen(*split)) && **split != '=')
 	{
-		split2 = ft_strsplit(*split, '=');
+		split2 = ft_split(*split, '=');
 		// check if env var
 		ft_add_local_var(group, *split2++, *split2);
 	}

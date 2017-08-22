@@ -94,6 +94,9 @@ void					ft_stock_path(t_path *path, char *path_value);
 void					ft_setenv(t_group *g);
 void					ft_unsetenv(t_group *g);
 void					ft_print_env(t_group *g);
-int					ft_parse_line(char *line, t_parse *parse);
-
+int						ft_parse_line(char *line, t_parse *parse);
+void					ft_exit(t_group *g);
+void					ft_free_env(t_env *e);
+void					ft_free_tabstr(char **tstr);
+void    ft_free_path(t_path *e);
 #endif

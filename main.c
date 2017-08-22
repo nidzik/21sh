@@ -7,9 +7,10 @@ void ft_cd(t_group *g)
 }
 void ft_error(char *str)
 {
-	ft_putendl(str);
+	if (str)
+		ft_putendl(str);
 }
-/*
+
 static char *ft_check_built(char *cmd, t_built *built, t_group *group)
 {
 	int i;
@@ -17,7 +18,7 @@ static char *ft_check_built(char *cmd, t_built *built, t_group *group)
 
 	i = 0;
 	array = NULL;
-	array = ft_strsplit(cmd, ' ');
+	array = ft_split(cmd);
 	while (i < 6 )
 	{
 		if (ft_strncmp(cmd, built->list_built_in[i], ft_strlen(built->list_built_in[i])) == 0)
@@ -39,26 +40,28 @@ static char *ft_check_built(char *cmd, t_built *built, t_group *group)
 				else
 					ft_error("usage : setenv VAR value");
 			}
-			(void)group;
-			ft_putendl(group->name);
-			ft_putendl(group->value);
-			ft_putnbr(i);
 			(*built->list_fct[i])(group);
-			ft_putendl("aft");
+			ft_free_tabstr(array);
 			return (cmd);
-
+			
 		}
 		i++;
 	}
+	ft_free_tabstr(array);
 	return (NULL);
 }
-*/
+
 static t_built *ft_init_built_in(t_group *group)
 {
 	static t_built *built;
 	int i;
+
 	(void)group;
-	built = malloc(sizeof(t_built));
+	if ((built = malloc(sizeof(t_built))) == NULL)
+	{
+		ft_error("malloc error");
+		ft_exit(group);
+	}
 	built->list_built_in[0] = NULL;
 	i = 0;
 	if (built->list_built_in[0] == NULL)
@@ -66,18 +69,21 @@ static t_built *ft_init_built_in(t_group *group)
 		built->list_built_in[0] = "cd";
 		built->list_fct[0] = ft_cd;		
 		built->list_built_in[1] = "exit";
+		built->list_fct[1] = ft_exit;
 		built->list_built_in[2] = "env";
 		built->list_fct[2] = ft_print_env;
 		built->list_built_in[3] = "unsetenv";
+		built->list_fct[3] = ft_unsetenv;
 		built->list_built_in[4] = "setenv";
-		built->list_fct[2] = ft_setenv;
+		built->list_fct[4] = ft_setenv;
 		built->list_built_in[5] = "echo";
 		built->list_built_in[6] = NULL;
 	}
+
 	return (built);
 }
 
-static char *ft_check_cmd(char *cmd, t_path *path)
+static char *find_cmd_in_path(char *cmd, t_path *path)
 {
 	struct stat sta;
 	int status;
@@ -88,7 +94,7 @@ static char *ft_check_cmd(char *cmd, t_path *path)
 	status = -1;
 	if (cmd == NULL )
 		return (NULL);
-	array_cmd = ft_strsplit(ft_strtrim(cmd), ' ');
+	array_cmd = ft_split(ft_strtrim(cmd));
 	while (path->next != NULL)
 	{
 		concat = malloc(sizeof(char) * (ft_strlen(path->value) + ft_strlen(array_cmd[0]) + 2));
@@ -100,13 +106,16 @@ static char *ft_check_cmd(char *cmd, t_path *path)
 			status = fstat(fd, &sta);
 			close(fd);
 		}
-		//free(concat);
-		if (status >= 0 )
-			return (concat);
+		if (status >= 0)
+			break;
+		free(concat);
 		path = path->next;
 	}
-	//	free(array_cmd);
-	return(NULL);
+	free(array_cmd);
+	if (status >= 0 )
+		return (concat);
+	else
+		return (NULL);
 }
 
 int main(int ac, char **av, char **env)
@@ -134,15 +143,16 @@ int main(int ac, char **av, char **env)
 	group->value = NULL;
 	parse = (t_parse *)malloc(sizeof(t_parse));
 	built = ft_init_built_in(group);
+	(*built->list_fct[2])(group);
 	status =  0;
 	ft_putstr("$> ");
 	while (get_next_line(0, &lines) > 0)
 	{
-		//if (ft_check_built(lines, built, group) != NULL)
-		//	;
-		if (ft_parse_line(lines, parse) >= 0)
+				if (ft_check_built(lines, built, group) != NULL)
+			;
+		else if (ft_parse_line(lines, parse) >= 0)
 		{
-			if (( (path_cmd = ft_check_cmd(lines, path)) != NULL))
+			if (( (path_cmd = find_cmd_in_path(lines, path)) != NULL))
 			{
 				father = fork();
 				if (father > 0)
@@ -152,15 +162,24 @@ int main(int ac, char **av, char **env)
 				}
 				if (father == 0)
 				{
-					split =  ft_strsplit(ft_strtrim(lines), ' ');
+					split =  ft_split(ft_strtrim(lines));
 					execve(path_cmd, split++, env);
-					free(path_cmd);
+					ft_free_tabstr(split);
+					//					ft_strdel(&path_cmd);
+					//free(split);
+					//split = NULL;
 				}
 			}
 			else
 				ft_putendl("command not found");
-		}
+			ft_strdel(&lines);
+			}
+					
 		ft_putstr("$> ");
 	}
+	
+	//ft_free_path(path);
+	//	free(path);
+		ft_exit(group);
 	return (0);
 }

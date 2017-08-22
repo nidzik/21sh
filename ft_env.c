@@ -10,10 +10,10 @@ void		ft_print_env(t_group *g)
 	t_env	*env;
 
 	env = g->env;
-	while (env)
+	while (env != NULL)
 	{
 		ft_putstr(env->name);
-		ft_putchar('=');
+		ft_putstr(" = ");
 		ft_putendl(env->value);
 		env = env->next;
 	}
@@ -30,18 +30,24 @@ void		ft_stock_env(t_env *list_env, t_path *path, char **envp)
 	char	*var_env;
 	char	**split;
 	t_env	*env_list;
-
+    char    **save_to_free;
+	
 	env = envp;
 	var_env = NULL;
 	env_list = list_env;
 	while (*env != 0)
 	{
 		var_env = *env;
-		split = ft_strsplit(var_env, '=');
-		env_list->name = *split;
+		split = ft_split_char(var_env, '=');
+		save_to_free = split;
+		env_list->name = ft_strdup(*split);
+		//	   if ((ft_strcmp(*split, "LSCOLORS") == 0))
+		// ft_putendl(env_list->name);
 		if (ft_strcmp(*split++, "PATH") == 0)
-			ft_stock_path(path, *split);
-		env_list->value = *split;
+		ft_stock_path(path, *split);
+		env_list->value = ft_strdup(*split);
+		//= malloc((ft_strlen(*split) + 1) * sizeof(char));
+		//ft_strncpy(env_list->value, *split,ft_strlen(*split) + 1);
 		env++;
 		if (*env)
 		{
@@ -50,6 +56,7 @@ void		ft_stock_env(t_env *list_env, t_path *path, char **envp)
 		}
 		else
 			env_list->next = NULL;
+		//	ft_free_tabstr(save_to_free);
 	}
 }
 
@@ -62,16 +69,23 @@ void		ft_stock_path(t_path *path, char *path_value)
 {
 	char	**split;
 	t_path	*path_list;
-
-	split = ft_strsplit(path_value, ':');
+	char    **save_to_free;
+	DIR *dir;
+	split = ft_split_char(path_value, ':');
+	save_to_free = split;
 	path_list = path;
 	while (*split != 0)
 	{
-		path_list->value = *split;
-		if (opendir(*split) != NULL)
+				path_list->value = ft_strdup(*split);
+			//= ft_memalloc((ft_strlen(*split) + 1) * sizeof(char));
+			//ft_strncpy(path_list->value, *split, ft_strlen(*split));
+				
+			if ((dir = opendir(*split)) != NULL)
+			{
 			path_list->valid = 1;
+			}
 		else
-			path_list->valid = 0;
+		path_list->valid = 0; 
 		if (split++)
 		{
 			path_list->next = (t_path *)malloc(sizeof(t_path));
@@ -79,7 +93,12 @@ void		ft_stock_path(t_path *path, char *path_value)
 		}
 		else
 			path_list->next = NULL;
+		if(dir != NULL)
+			closedir(dir);
+
 	}
+	//	ft_free_path(path);
+	ft_free_tabstr(save_to_free);
 }
 
 /*
@@ -91,7 +110,6 @@ void		ft_setenv(t_group *g)
 	int	set;
 	t_env	*env_list;
 
-	ft_putendl("boh");
 	set = 0;
 	env_list = g->env;
 	while (env_list)
