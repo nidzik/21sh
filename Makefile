@@ -38,7 +38,8 @@ SRCSFILES = main.c \
 	get_next_line.c \
 	ft_built_in.c \
 	ft_handle_cmd.c \
-	free.c
+	free.c \
+	ft_init.c
 
 SRC = $(addprefix $(SRCPATH)/,$(SRCSFILES))
 OBJECTS = $(SRC:$(SRCPATH)/%.c=$(OBJPATH)/%.o)
