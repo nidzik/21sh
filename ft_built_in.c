@@ -75,17 +75,26 @@ int			ft_stock_delimitors(char *line, t_parse *parse)
 {
 	char		*string;
 
-	ft_putendl("Enter in ft_stock_delimitor");
+//	ft_putendl("Enter in ft_stock_delimitor");
 	string = line;
+	ft_putendl(string);
 	while (*string)
 	{
-		ft_putchar(*string);
-		ft_putchar('\n');
+//		ft_putendl("start");
+//		ft_putchar(*string);
+//		ft_putchar('\n');
 		if ((string = ft_strchr(string, '\'')) != NULL)
 			parse->delimitor->simple_q += 1;
-		else if ((string = ft_strchr(string, '\"')) != NULL)
+		else
+			break ;
+		if ((string = ft_strchr(string, '\"')) != NULL)
 			parse->delimitor->double_q += 1;
-	//	*string++;
+		else
+			break ;
+//		ft_putstr("new string: ");
+//		ft_putendl(string);
+//		ft_putendl("end");
+		//string++;
 	}
 	ft_putstr("simple quote :");
 	ft_putnbr(parse->delimitor->simple_q);
@@ -93,8 +102,9 @@ int			ft_stock_delimitors(char *line, t_parse *parse)
 	ft_putstr("double quote :");
 	ft_putnbr(parse->delimitor->double_q);
 	ft_putchar('\n');
-	if ((parse->delimitor->simple_q % 2) != 0 ||
-					(parse->delimitor->double_q % 2) != 0)
+	if (parse->delimitor->simple_q != 0 && (parse->delimitor->simple_q % 2) != 0)
+		return (1);
+	else if ((parse->delimitor->double_q % 2) != 0 && parse->delimitor->double_q != 0)
 		return (1);
 	return (0);
 }
@@ -167,5 +177,5 @@ int			ft_parse_line(char *line, t_parse *parse)
 	{
 	}
 */
-	return (1);
+	return (0);
 }
