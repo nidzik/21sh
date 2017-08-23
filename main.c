@@ -129,6 +129,7 @@ int main(int ac, char **av, char **env)
 	t_path          *path;
 	char *path_cmd;
 	char ** split;
+	int	ret = 0;
 	t_built *built;
 	t_group *group;
 	t_parse *parse;
@@ -142,7 +143,7 @@ int main(int ac, char **av, char **env)
 	group->env = list_env;
 	group->name = NULL;
 	group->value = NULL;
-	parse = (t_parse *)malloc(sizeof(t_parse));
+	parse = ft_init_parse_struct();
 	built = ft_init_built_in(group);
 	(*built->list_fct[2])(group);
 	status =  0;
@@ -175,7 +176,10 @@ int main(int ac, char **av, char **env)
 			ft_putstr("> ");
 		else
 			ft_putstr("$> ");				
+		parse->next = ft_init_parse_struct();
+		parse = parse->next;
 	}
+	free(parse);
 	ft_exit(group);
 	return (0);
 }
