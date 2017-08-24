@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "sig_term.h"
 
 static t_built *ft_init_built_in(t_group *group)
 {
@@ -39,11 +40,10 @@ int main(int ac, char **av, char **env)
 	t_built *built;
 	t_group *group;
 	t_parse *parse;
-	int ret;
-	
-	ret = 0;
-	ac = 0;
+
 	(void)av;
+	(void)ac;
+	init();
 	list_env = (t_env *)malloc(sizeof(t_env));
 	path = (t_path *)malloc(sizeof(t_path));
 	ft_stock_env(list_env, path, env);
@@ -55,7 +55,7 @@ int main(int ac, char **av, char **env)
 	built = ft_init_built_in(group);
 	(*built->list_fct[2])(group);
 	ft_putstr("$> ");
+	signal(SIGINT, ft_ctrl_c);
 	ft_handle_line(built, group, path);
-	ft_exit(group);
 	return (0);
 }

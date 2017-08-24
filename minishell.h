@@ -3,6 +3,7 @@
 
 #include "libft/libft.h"
 #include "get_next_line.h"
+#include "sig_term.h"
 #include <dirent.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -88,6 +89,7 @@ typedef struct			s_group
 	char				*cmd;
 	char				*name;
 	char				*value;
+	struct termios		*term;
 }						t_group;
 
 typedef struct			s_built

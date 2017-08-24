@@ -28,7 +28,8 @@ LIBS = $(LFT)
 INCLUDES = $(INCLUDE) $(LFTIPATH)
 
 BASEFLAGS = -Wall -Wextra # -Wconversion
-CFLAGS = $(BASEFLAGS) #-Werror -O2 -g
+CURSEFLAGS = -lcurses
+CFLAGS = $(BASEFLAGS) -Werror -O2 -g 
 
 LFTCALL = all
 LFTRE = re
@@ -41,7 +42,10 @@ SRCSFILES = main.c \
 	free.c \
 	ft_init.c \
 	utils.c \
-	ft_handle_line.c
+	ft_handle_line.c \
+	signal.c \
+	termios.c 
+
 SRC = $(addprefix $(SRCPATH)/,$(SRCSFILES))
 OBJECTS = $(SRC:$(SRCPATH)/%.c=$(OBJPATH)/%.o)
 
@@ -56,7 +60,7 @@ all: l $(NAME)
 
 $(NAME): $(OBJECTS)
 	@echo "$(Y)[COMPILING MINISHELL] $(G) $(CC) -o $@ $(CFLAGS) -g $(OBJECTS) $(INCLUDES) $(LIBS) $(E)"
-	@$(CC) -o $@ $(CFLAGS) -g $(OBJECTS) $(INCLUDES) $(LIBS)
+	@$(CC) -o $@ $(CFLAGS) $(OBJECTS) $(INCLUDES) $(LIBS) $(CURSEFLAGS)
 	@echo "$(Y)[COMPILING NMINISHELL DONE]$(E)"
 
 $(OBJECTS): $(OBJPATH)/%.o : $(SRCPATH)/%.c

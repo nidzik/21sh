@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "sig_term.h"
 
 static char *find_cmd_in_path(char *cmd, t_path *path)
 {
@@ -82,35 +83,43 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 	char **split;
 	int status;
 	pid_t father;
-	char *lines;
+	char *liness;
 	char *path_cmd;
 	
 	status = 0;
-	
-	while (get_next_line(0, &lines) > 0)
+	while (get_next_line(0, &liness) > 0)
 	{
 		/* if ((ret = ft_parse_line(ft_strtrim(lines), parse)) == 0) */
-		if (ft_check_built(lines, built, group) != NULL)
+		status = 0;
+		if (ft_strlen(liness) == 0 || ft_check_built(liness, built, group) != NULL)
 			;
-			else if (( (path_cmd = find_cmd_in_path(lines, path)) != NULL))
+		else if (  ((path_cmd = find_cmd_in_path(liness, path)) != NULL))
 			{
 				father = fork();
 				if (father > 0)
 				{
 					wait(&status);
-					printf("exec father");
+					ft_putendl("exit");
 				}
 				if (father == 0)
 				{
-					split =  ft_split(lines);
-					
-					execve(path_cmd, split++, ft_list_to_tab(group->env));
-					ft_free_tabstr(split);
+					//signal(SIGINT,ft_ctrl_c_fork);
+					if (ft_strlen(liness) > 0)
+					{
+						split =  ft_split(liness);
+						
+						execve(path_cmd, split++, ft_list_to_tab(group->env));
+
+						ft_free_tabstr(split);
+						//exit(1);
+					}
+
+					exit(1);
 				}
 			}
 			else
 				ft_putendl("command not found");
-			ft_strdel(&lines);
+			ft_strdel(&liness);
 			//			ft_putstr("$> ");	
 			/*}
 		else if (ret == 1)

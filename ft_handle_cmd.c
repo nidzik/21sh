@@ -4,10 +4,11 @@ void ft_exit(t_group *g)
 {
 	(void)g;
 	ft_free_env(g->env);
-	ft_strdel(&g->name);
-	ft_strdel(&g->value);
+	//ft_strdel(&g->name);
+	//ft_strdel(&g->value);
 	free(g);
-	while(1);
+	ft_putchar('\n');
+	destruct();
 	exit(1);
 }
 
@@ -47,7 +48,7 @@ void ft_cd(t_group *g)
 	}
 	else
 		modify = arrcmd[1];
-	ft_putendl(modify);
+//	ft_putendl(modify);
     if (chdir(modify) < 0)
         ft_error_cmd(arrcmd[0], ": No such file or directory: ", arrcmd[1]);
 	else
