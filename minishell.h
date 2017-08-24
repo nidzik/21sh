@@ -8,10 +8,13 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <sys/param.h>
 #include <fcntl.h>
 
 int         get_next_line(const int fd, char **line);
 int         ft_count_rows(char *name);
+
+#define CD 0
 
 typedef enum			e_cmd_state
 {
@@ -82,6 +85,7 @@ typedef struct			s_group
 {
 	t_env				*env;
 	t_loc_var			*loc_var;
+	char				*cmd;
 	char				*name;
 	char				*value;
 }						t_group;
@@ -97,13 +101,19 @@ void					ft_stock_path(t_path *path, char *path_value);
 void					ft_setenv(t_group *g);
 void					ft_unsetenv(t_group *g);
 void					ft_print_env(t_group *g);
-
+void					ft_cd(t_group *g);
+void                    replace_value_in_env(t_env *e, char *name, char * new_value);
+char                    *find_value_in_env(t_env *e, char *name);
+char    				**ft_list_to_tab(t_env *e);
+void					ft_handle_line(t_built *built, t_group *group, t_path *path);
 int					ft_parse_line(char *line, t_parse *parse);
 int					ft_stock_delimitors(char *line, t_parse *parse);
 t_parse					*ft_init_parse_struct(void);
 
 void					ft_exit(t_group *g);
 void					ft_free_env(t_env *e);
+void                    ft_error(char *str);
+void                    ft_error_cmd(char *cmd, char *msg, char *args);
 void					ft_free_tabstr(char **tstr);
 void					ft_free_path(t_path *e);
 #endif
