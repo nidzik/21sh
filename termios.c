@@ -7,16 +7,25 @@
 
 int			my_out(int i)
 {
-	putchar(i);
-	return (i);
+    int fd;
+
+    fd = open("/dev/tty", O_RDWR);
+    if (fd == -1)
+    {
+        write(2, "Open error\n", 11);
+        exit(-1);
+    }
+    write(fd, &i, 1);
+    close(fd);
+    return (0);
 }
 
-static void ft_exit_f(char *str)
+void ft_exit_f(char *str)
 {
 	ft_putendl(str);
 	exit(1);
 }
-
+struct termios global_term;
 int			init(void)
 {
     char    *term_buffer;
@@ -32,11 +41,18 @@ int			init(void)
         ft_exit_f("Could not access the termcap data base or is not defined.");
     if (tcgetattr(0, &term) == -1)
         ft_exit_f("Failed tcgetattr!");
+	  if (tcgetattr(0, &global_term) == -1)
+        ft_exit_f("Failed global tcgetattr!");
     tputs(tgetstr("ve", NULL), 1, my_out);
-    term.c_lflag &= (unsigned long)~(ICANON );
+//	tputs(tgetstr("am", NULL), 1, my_out);
+//	tputs(tgetstr("xn", NULL), 1, my_out);
+	tputs(tgetstr("bw", NULL),1,my_out);
+    term.c_lflag &= (unsigned long)~(ICANON |  ECHO | ECHOE);
+//	term.c_lflag |= ~(TCOFLUSH);
+
     term.c_cc[VMIN] = 1;
     term.c_cc[VTIME] = 0;
-    if (tcsetattr(0, TCSADRAIN, &term) == -1)
+    if (tcsetattr(0, TCSANOW, &term) == -1)
         ft_exit_f("Failed tcsetattr!");
     return (0);
 }
@@ -50,11 +66,12 @@ void        destruct(void)
         ft_putstr("Failed tcgetattr!\n");
 //        exit(1);
     }
-    tputs(tgetstr("te", NULL), 0, my_out);
-    tputs(tgetstr("ve", NULL), 0, my_out);
+//    tputs(tgetstr("te", NULL), 0, my_out);
+//    tputs(tgetstr("ve", NULL), 0, my_out);
     tputs(tgetstr("cd", NULL), 0, my_out);
-    term.c_lflag = (ICANON | ECHO | ISIG);
-    if (tcsetattr(0, 0, &term) == -1)
+	tputs(tgetstr("ei", NULL),1,my_out);
+    term.c_lflag = (ICANON | ECHO | ECHOE| ISIG);
+    if (tcsetattr(0, 0, &global_term) == -1)
     {
         ft_putstr("Failed tcsetattr\n");
         exit(1);

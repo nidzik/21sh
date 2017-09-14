@@ -40,9 +40,10 @@ int main(int ac, char **av, char **env)
 	t_built *built;
 	t_group *group;
 	t_parse *parse;
-
+//	struct termios term;
 	(void)av;
 	(void)ac;
+
 	init();
 	list_env = (t_env *)malloc(sizeof(t_env));
 	path = (t_path *)malloc(sizeof(t_path));
@@ -56,6 +57,8 @@ int main(int ac, char **av, char **env)
 	(*built->list_fct[2])(group);
 	ft_putstr("$> ");
 	signal(SIGINT, ft_ctrl_c);
+	signal(SIGHUP, ft_ctrl_d);
 	ft_handle_line(built, group, path);
+	
 	return (0);
 }

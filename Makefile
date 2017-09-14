@@ -29,7 +29,7 @@ INCLUDES = $(INCLUDE) $(LFTIPATH)
 
 BASEFLAGS = -Wall -Wextra # -Wconversion
 CURSEFLAGS = -lcurses
-CFLAGS = $(BASEFLAGS) -Werror -O2 -g 
+CFLAGS = $(BASEFLAGS) #-Werror -O2 -g 
 
 LFTCALL = all
 LFTRE = re
@@ -42,9 +42,12 @@ SRCSFILES = main.c \
 	free.c \
 	ft_init.c \
 	utils.c \
+	utils2.c \
 	ft_handle_line.c \
+	handle_alt.c \
 	signal.c \
-	termios.c 
+	termios.c \
+	termios_size_win.c
 
 SRC = $(addprefix $(SRCPATH)/,$(SRCSFILES))
 OBJECTS = $(SRC:$(SRCPATH)/%.c=$(OBJPATH)/%.o)

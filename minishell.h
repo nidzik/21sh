@@ -98,6 +98,16 @@ typedef struct			s_built
     void (*list_fct[7])(t_group *);
 }						t_built;
 
+typedef struct			s_line
+{
+    char				*buf;
+    char				tmp[5];
+    int					r;
+    int					cursor;
+    int					len_max;
+    char				letter;
+}						t_line;
+
 void					ft_stock_env(t_env *list_env, t_path *path, char **envp);
 void					ft_stock_path(t_path *path, char *path_value);
 void					ft_setenv(t_group *g);
@@ -108,10 +118,16 @@ void                    replace_value_in_env(t_env *e, char *name, char * new_va
 char                    *find_value_in_env(t_env *e, char *name);
 char    				**ft_list_to_tab(t_env *e);
 void					ft_handle_line(t_built *built, t_group *group, t_path *path);
-int					ft_parse_line(char *line, t_parse *parse);
-int					ft_stock_delimitors(char *line, t_parse *parse);
+int						ft_handle_key_code(t_line *li);
+void					ft_handle_alt(t_line *li);
+void					ft_handle_alt_r(t_line *li);
+void					ft_handle_alt_l(t_line *li);
+void					ft_handle_alt_u(t_line *li);
+void					ft_handle_alt_d(t_line *li);
+int						ft_parse_line(char *line, t_parse *parse);
+int						ft_stock_delimitors(char *line, t_parse *parse);
 t_parse					*ft_init_parse_struct(void);
-
+void ft_print_buf(char *buf, int cursor, int len_max);
 void					ft_exit(t_group *g);
 void					ft_free_env(t_env *e);
 void                    ft_error(char *str);
