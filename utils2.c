@@ -109,7 +109,7 @@ int ft_handle_key_code(t_line *li)
 		{
 
 			cursor_pos = ft_get_cursor();
-			if (cursor_pos->x == ft_get_win_x()-1)
+			if (cursor_pos->x == ft_get_win_x()-2)
 				tputs(tgetstr("do", NULL),1,my_out);
 			else
 				tputs(tgetstr("nd", NULL),1,my_out);
@@ -122,7 +122,7 @@ int ft_handle_key_code(t_line *li)
 			{
 				i = li->cursor;
 				tputs(tgetstr("up", NULL),1,my_out);
-				while (ft_get_cursor()->x <= ft_get_win_x()-2)
+				while (ft_get_cursor()->x <= ft_get_win_x()-3)
 				{
 					tputs(tgetstr("nd", NULL),1,my_out);
 					i--;
@@ -166,11 +166,11 @@ void ft_print_buf(char *buf, int cursor, int len_max, t_point *p)
 	t_point *point;
 	t_point *p2;
 	int nb_lines,line;
-int i,k;
-static int j = 1;
-i = 0;
-k = 0;
-line =1;
+	int i,k;
+	static int j = 1;
+	i = 0;
+	k = 0;
+	line =1;
 	nb_lines = 1;
 	tputs(tgetstr("ei", NULL),1,my_out);
 	point = ft_get_cursor();
@@ -180,17 +180,23 @@ line =1;
 	while (cursor < len_max)
 	{
 		//ft_putchar_fd(buf[cursor],0);
-		 //tputs(&buf[cursor],1,my_out);
+		//tputs(&buf[cursor],1,my_out);
 		if (ft_get_cursor()->x == ft_get_win_x()-1)
 		{
 //			point->y--;
 //ft_putstr("gg");
-tputs(tgetstr("cd", NULL),1,my_out);
-					                  ft_putchar_fd('\n',0);
-														line++;
-														i++;
-														if (ft_get_cursor()->y != p2->y)
-														k++;
+			tputs(tgetstr("cd", NULL),1,my_out);
+			if (ft_get_cursor()->y == ft_get_win_y())
+			{
+				tputs(tgetstr("sf", NULL),1,my_out);
+//				ft_putstr("ASDASDASDASDASD");
+			}
+			else
+				ft_putchar_fd('\n',0);
+			line++;
+			i++;
+			if (ft_get_cursor()->y != p2->y)
+				k++;
 //					p2->y--;
 		}
 		ft_putchar_fd(buf[cursor],0);
@@ -198,8 +204,8 @@ tputs(tgetstr("cd", NULL),1,my_out);
 	}
 //	tputs(buf,1,my_out);
 	nb_lines += (len_max + 3 ) / (ft_get_win_x()-1);
-		if (line == 1)
-	tputs(tgetstr("rc", NULL),1,my_out);
+	if (line == 1)
+		tputs(tgetstr("rc", NULL),1,my_out);
 	else if (line > 1)
 	{
 		//
@@ -213,26 +219,26 @@ tputs(tgetstr("cd", NULL),1,my_out);
 			{
 				p->y++;
 				tputs(tgetstr("up", NULL),1,my_out);
-			//tputs(tgetstr("sc", NULL),1,my_out);
-		}
+				//tputs(tgetstr("sc", NULL),1,my_out);
+			}
 		}
 		else if (ft_get_cursor()->x == 2 && ft_get_cursor()->y == ft_get_win_y())
 		{
 			tputs(tgetstr("rc", NULL),1,my_out);
 			if (ft_get_cursor()->y == ft_get_win_y())
-			tputs(tgetstr("up", NULL),1,my_out);
+				tputs(tgetstr("up", NULL),1,my_out);
 
 		}
 
 		else
-		tputs(tgetstr("rc", NULL),1,my_out);
+			tputs(tgetstr("rc", NULL),1,my_out);
 
 	}
 
 
 //	debug("gg" , ft_itoa(nb_lines));
 //	if (len_max > (ft_get_win_x()-4 ))
-		//tputs(tgoto(tgetstr("cm",NULL), point->x -1 , point->y - nb_lines ),1,my_out);
+	//tputs(tgoto(tgetstr("cm",NULL), point->x -1 , point->y - nb_lines ),1,my_out);
 //	else
 //	tputs(tgoto(tgetstr("cm",NULL), point->x -1 , point->y),1,my_out);
 
