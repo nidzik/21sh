@@ -70,7 +70,7 @@ static char *ft_check_built(char *cmd, t_built *built, t_group *group)
 			(*built->list_fct[i])(group);
 			ft_free_tabstr(array);
 			return (cmd);
-			
+
 		}
 		i++;
 	}
@@ -138,6 +138,7 @@ char *ft_insert(char *string, int pos_cursor, char letter)
 void ft_handle_line(t_built *built, t_group *group, t_path *path)
 {
 	t_line *li;
+	t_point *p;
 
 	li = (t_line *)malloc(sizeof(t_line));
 	li->cursor = 0;
@@ -147,12 +148,12 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 	li->buf = malloc(1024 * sizeof(char));
 	ft_bzero(li->buf,1024);
 	tputs(tgetstr("sc", NULL),1,my_out);
-	
+	p = ft_get_cursor();
 	while(42)
 	{
 		if ((li->r = read(0,li->tmp, 4)) >=0)
 		{
-			
+
 			 ft_handle_key_code(li);
 			// *** GO TO INSERT MODE ***
 			if (li->cursor != li->len_max)
@@ -183,11 +184,14 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 			else if (ft_isalnum(li->tmp[0]) == 1 || SPACE || li->tmp[0] == '\t')
 			{
 
-				
+
 
 				ft_putchar(li->tmp[0]);
-				if (ft_get_cursor()->x == ft_get_win_x())
+				if (ft_get_cursor()->x == ft_get_win_x()-1)
+				{
+					tputs(tgetstr("cd", NULL),1,my_out);
 					ft_putchar('\n');
+				}
 				li->letter = li->tmp[0];
 				li->len_max++;
 				li->cursor++;
@@ -195,8 +199,13 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 					ft_strncat(li->buf, li->tmp, 1);
 				else
 				{
+					tputs(tgetstr("sc", NULL),1,my_out);
+					//tputs(tgetstr("cd", NULL),1,my_out);
+
 					ft_insert(li->buf, li->cursor, li->letter);
-					ft_print_buf(li->buf, li->cursor, li->len_max);
+					ft_print_buf(li->buf, li->cursor, li->len_max, p);
+					//tputs(tgetstr("rc", NULL),1,my_out);
+
 				}
 			}
 
@@ -204,7 +213,7 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 		}
 		else
 			ft_putendl("error read");
-	}	
+	}
 }
 
 /*void ft_handle_line(t_built *built, t_group *group, t_path *path)
@@ -215,7 +224,7 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
   char *liness;
   char *path_cmd;
   char buf[1024];
-	
+
   status = 0;
   while (get_next_line(0, &liness) > 0)
   {
@@ -237,7 +246,7 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
   if (ft_strlen(liness) > 0)
   {
   split =  ft_split(liness);
-						
+
   execve(path_cmd, split++, ft_list_to_tab(group->env));
 
   ft_free_tabstr(split);
@@ -250,12 +259,12 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
   else
   ft_putendl("command not found");
   ft_strdel(&liness);
-  //			ft_putstr("$> ");	
+  //			ft_putstr("$> ");
   //}
 //else if (ret == 1)
 //ft_putstr("> ");
 //else
-		
+
 ft_putstr("$> ");
 }
 }

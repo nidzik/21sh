@@ -46,7 +46,7 @@ int			init(void)
     tputs(tgetstr("ve", NULL), 1, my_out);
 //	tputs(tgetstr("am", NULL), 1, my_out);
 //	tputs(tgetstr("xn", NULL), 1, my_out);
-	tputs(tgetstr("bw", NULL),1,my_out);
+	//tputs(tgetstr("bw", NULL),1,my_out);
     term.c_lflag &= (unsigned long)~(ICANON |  ECHO | ECHOE);
 //	term.c_lflag |= ~(TCOFLUSH);
 

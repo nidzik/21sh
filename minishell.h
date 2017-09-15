@@ -43,7 +43,7 @@ typedef struct			s_parse
 	char			*command;
 	char			*argument;
 	t_cmd_state		cmd_state;
-	
+
 }				t_parse;
 
 /*
@@ -127,7 +127,7 @@ void					ft_handle_alt_d(t_line *li);
 int						ft_parse_line(char *line, t_parse *parse);
 int						ft_stock_delimitors(char *line, t_parse *parse);
 t_parse					*ft_init_parse_struct(void);
-void ft_print_buf(char *buf, int cursor, int len_max);
+void ft_print_buf(char *buf, int cursor, int len_max, t_point *p);
 void					ft_exit(t_group *g);
 void					ft_free_env(t_env *e);
 void                    ft_error(char *str);
