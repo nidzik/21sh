@@ -22,7 +22,7 @@ void	 	ft_handle_alt_r(t_line *li)
         while (li->buf[i] == ' ')
         {
             cursor_pos = ft_get_cursor();
-            if (cursor_pos->x == ft_get_win_x())
+            if (cursor_pos->x == ft_get_win_x()-1)
                 tputs(tgetstr("do", NULL),1,my_out);
             else
                 tputs(tgetstr("nd", NULL),1,my_out);
@@ -31,7 +31,7 @@ void	 	ft_handle_alt_r(t_line *li)
         while (ft_isalnum(li->buf[i]) == 1)
         {
             cursor_pos = ft_get_cursor();
-            if (cursor_pos->x == ft_get_win_x())
+            if (cursor_pos->x == ft_get_win_x()-1)
                 tputs(tgetstr("do", NULL),1,my_out);
             else
                 tputs(tgetstr("nd", NULL),1,my_out);
@@ -42,37 +42,37 @@ void	 	ft_handle_alt_r(t_line *li)
 	li->cursor = i;
 }
 
+
 void		ft_handle_alt_l(t_line *li)
 {
 	int		i;
-    t_point     *cursor_point;
+	t_point     *cursor_point;
 	
 	i = li->cursor;
+	cursor_point = ft_get_cursor();
 	if (ALT_L)
-    {
-        if (i  > 0)
-        {
-//			if (ft_get_cursor()->x == 33)
-//				tputs(tgetstr("nd", NULL),1,my_out);
-            tputs(tgetstr("le", NULL),1,my_out);
-            i--;
-			}
-        while ((li->buf[i] == ' ') && (i > 0) )
-        {
-            tputs(tgetstr("le", NULL),1,my_out);
-            i--;
-        }
+	{
+		if (i  > 0)
+		{
+			move_cursor_left()		;
+			i--;
+		}
+		while ((li->buf[i] == ' ') && (i > 0) )
+		{
+			move_cursor_left();
+			i--;
+		}
+		while (ft_isalnum(li->buf[i]) == 1 && i > 0)
+		{
+			if (li->buf[i-1] == ' ' || i == 0)
+				break;
+			move_cursor_left();
+			i--;
+		}
 
-        while (ft_isalnum(li->buf[i]) == 1 && i > 0)
-        {
-            if (li->buf[i-1] == ' ' || i == 0)
-                break;
-            tputs(tgetstr("le", NULL),1,my_out);
-            i--;
-        }
-
-    }
-    li->cursor = i;
+	}
+	li->cursor = i;
+	free(cursor_point);
 }
 
 void			ft_handle_alt_u(t_line *li)
@@ -93,12 +93,13 @@ void			ft_handle_alt_u(t_line *li)
 		{
 			while (save_cursor_pos != i)
 			{
-				tputs(tgetstr("le", NULL),1,my_out);
+				move_cursor_left();
 				save_cursor_pos--;
 			}
 			li->cursor = i;
 		}
-	}		
+	}
+	free(cursor_point);
 }
 
 void		ft_handle_alt_d(t_line *li)
@@ -127,5 +128,6 @@ void		ft_handle_alt_d(t_line *li)
 			}
 			li->cursor = i;
 		}
-	}		
+	}
+	free(cursor_point);
 }

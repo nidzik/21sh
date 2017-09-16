@@ -37,4 +37,7 @@ void			ft_exit_f(char *str);
 int				ft_get_win_x(void);
 int				ft_get_win_y(void);
 t_point		    *ft_get_cursor(void);
+int				ft_get_cursor_x(void);
+int				ft_get_cursor_y(void);
+void			move_cursor_left(void);
 #endif

@@ -187,7 +187,7 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 
 
 				ft_putchar(li->tmp[0]);
-				if (ft_get_cursor()->x == ft_get_win_x()-1)
+				if (ft_get_cursor()->x == ft_get_win_x())
 				{
 					tputs(tgetstr("cd", NULL),1,my_out);
 					ft_putchar('\n');
