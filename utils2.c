@@ -82,7 +82,6 @@ void ft_print_buf(char *buf, int cursor, int len_max, t_point *p)
 			if (ft_get_cursor()->y == ft_get_win_y())
 			{
 				line++;
-				ft_putstr("coucou");
 				tputs(tgetstr("sf", NULL),1,my_out);
 			}
 			else
@@ -108,4 +107,13 @@ void ft_print_buf(char *buf, int cursor, int len_max, t_point *p)
 
 	tputs(tgetstr("im", NULL),1,my_out);
 
+}
+
+int	ft_cursor_end(int cursor, int len_max)
+{
+	while (cursor < len_max)
+	{
+		ft_move_cursor_right();
+		cursor++;
+	}
 }

@@ -54,19 +54,19 @@ void		ft_handle_alt_l(t_line *li)
 	{
 		if (i  > 0)
 		{
-			move_cursor_left()		;
+			ft_move_cursor_left()		;
 			i--;
 		}
 		while ((li->buf[i] == ' ') && (i > 0) )
 		{
-			move_cursor_left();
+			ft_move_cursor_left();
 			i--;
 		}
 		while (ft_isalnum(li->buf[i]) == 1 && i > 0)
 		{
 			if (li->buf[i-1] == ' ' || i == 0)
 				break;
-			move_cursor_left();
+			ft_move_cursor_left();
 			i--;
 		}
 
@@ -84,6 +84,14 @@ void			ft_handle_alt_u(t_line *li)
 	i = li->cursor;
 	save_cursor_pos = li->cursor;
 	cursor_point = ft_get_cursor();
+
+	if (li->cursor - ft_get_win_x() >= 0)
+	{
+		tputs(tgetstr("up", NULL),1,my_out);
+		li->cursor -= ft_get_win_x()-1;
+	}
+	
+/*	
 	while (i >= 0)
 	{	
 		i--;
@@ -96,27 +104,39 @@ void			ft_handle_alt_u(t_line *li)
 				move_cursor_left();
 				save_cursor_pos--;
 			}
+			//if (save_cursor_pos == i)
+				//tputs(tgetstr("up", NULL),1,my_out);
 			li->cursor = i;
 		}
 	}
 	free(cursor_point);
+*/
 }
 
 void		ft_handle_alt_d(t_line *li)
 {
-	int			save_cursor_pos;
+	int			j;
 	t_point		*cursor_point;
 	int 		i;
 
 	i = li->cursor;
-	save_cursor_pos = li->cursor;
+	j = ft_get_win_x()-2 ;
 	cursor_point = ft_get_cursor();
-	while (i <= li->len_max)
-	{	
+//	ft_putstr("coucou");
+	if (i + ft_get_win_x() - 1  <= li->len_max)
+		while (j >= 0)
+		{
+//			ft_putstr("asdasd");
+			ft_move_cursor_right();
+			j--;
+			i++;
+		}
+	li->cursor = i; 
+/*
 		i++;
 		cursor_point->x++;
-		if (cursor_point->x >= ft_get_win_x() && \
-			( cursor_point->x - ft_get_win_x() == ft_get_cursor()->x))
+		if (cursor_point->x >= ft_get_win_x() - 1  && \
+			( cursor_point->x - ft_get_win_x() - 1 == ft_get_cursor()->x))
 		{
 			while (save_cursor_pos != i)
 			{
@@ -126,8 +146,8 @@ void		ft_handle_alt_d(t_line *li)
 					tputs(tgetstr("nd", NULL),1,my_out);
 				save_cursor_pos++;
 			}
-			li->cursor = i;
+			li->cursor = i +1;
 		}
-	}
+		}*/
 	free(cursor_point);
 }

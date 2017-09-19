@@ -39,5 +39,7 @@ int				ft_get_win_y(void);
 t_point		    *ft_get_cursor(void);
 int				ft_get_cursor_x(void);
 int				ft_get_cursor_y(void);
-void			move_cursor_left(void);
+void			ft_move_cursor_left(void);
+void			ft_move_cursor_right(void);
+int				ft_cursor_end(int cursor, int len_max);
 #endif

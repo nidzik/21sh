@@ -169,14 +169,15 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 			// *** HANDLE RETURN ***
 		    if ( li->tmp[0] == '\r' || li->tmp[0] == '\n')
 			{
-				li->len_max = 0;
-				li->cursor = 0;
 				if (ft_strncmp(li->buf, "exit", 5) == 0)
 					ft_exit(group);
 				tputs(tgetstr("rc", NULL),1,my_out);
 				if (ft_strlen(li->buf) > 0)
 					ft_putchar(li->tmp[0]);
 				ft_putendl(li->buf);
+				ft_cursor_end(li->cursor, li->len_max);
+				li->len_max = 0;
+				li->cursor = 0;
 				ft_putstr("$> ");
 				tputs(tgetstr("sc", NULL),1,my_out);
 				ft_bzero(li->buf, 1024);

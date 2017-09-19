@@ -26,7 +26,7 @@ t_point *ft_get_cursor(void)
 	return (cursor);
 }
 
-int		ft_get_cursor_x()
+int		ft_get_cursor_x(void)
 {
 	char *ansi;
 	char *buff;

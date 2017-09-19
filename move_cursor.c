@@ -1,6 +1,6 @@
-#include "minishell.h"
+#include "sig_term.h"
 
-void        move_cursor_left(void)
+void        ft_move_cursor_left(void)
 {
     t_point *cursor_pos;
     int i;
@@ -19,4 +19,12 @@ void        move_cursor_left(void)
     else
         tputs(tgetstr("le", NULL),1,my_out);
     free(cursor_pos);
+}
+
+void		ft_move_cursor_right(void)
+{
+	if (ft_get_cursor_x() == ft_get_win_x()-1)
+		tputs(tgetstr("do", NULL),1,my_out);
+	else
+		tputs(tgetstr("nd", NULL),1,my_out);
 }
