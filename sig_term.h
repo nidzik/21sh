@@ -19,7 +19,11 @@
 # define ALT_L		(TMPF0 && li->tmp[1] == 27 && li->tmp[2] == 91 && li->tmp[3] == 68)
 # define ALT_U		(TMPF0 && li->tmp[1] == 27 && li->tmp[2] == 91 && li->tmp[3] == 65)
 	# define ALT_D		(TMPF0 && li->tmp[1] == 27 && li->tmp[2] == 91 && li->tmp[3] == 66)
+#define FN_D		(tmp[0] == 27 && tmp[1] == 91 && tmp[2] == 54 && tmp[3] == 126 )
+#define FN_U		(tmp[0] == 27 && tmp[1] == 91 && tmp[2] == 53 && tmp[3] == 126 )
+#define CTRL_K		(li->tmp[0] == 11 && li->tmp[1] == 0)
 
+#define CTRL_U		(li->tmp[0] == 21 && li->tmp[1] == 0)
 
 typedef struct s_point
 {
@@ -42,4 +46,6 @@ int				ft_get_cursor_y(void);
 void			ft_move_cursor_left(void);
 void			ft_move_cursor_right(void);
 int				ft_cursor_end(int cursor, int len_max);
+int				ft_cursor_start(int cursor);
+
 #endif

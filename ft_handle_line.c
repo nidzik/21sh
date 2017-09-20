@@ -139,14 +139,20 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 {
 	t_line *li;
 	t_point *p;
-
+	
 	li = (t_line *)malloc(sizeof(t_line));
 	li->cursor = 0;
+	li->shist = (t_hist *)malloc(sizeof(t_hist));
+	li->shist->line = NULL;
+	li->shist->next = NULL;
+	li->hist = li->shist;
+	li->cut = NULL;
 	li->len_max = 0;
 	(void)path;
 	(void)built;
 	li->buf = malloc(1024 * sizeof(char));
 	ft_bzero(li->buf,1024);
+	ft_bzero(li->tmp,5);
 	tputs(tgetstr("sc", NULL),1,my_out);
 	p = ft_get_cursor();
 	while(42)
@@ -154,7 +160,7 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 		if ((li->r = read(0,li->tmp, 4)) >=0)
 		{
 
-			 ft_handle_key_code(li);
+			li->cursor = ft_handle_key_code(li);
 			// *** GO TO INSERT MODE ***
 			if (li->cursor != li->len_max)
 				tputs(tgetstr("im", NULL),1,my_out);
@@ -173,9 +179,16 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 					ft_exit(group);
 				tputs(tgetstr("rc", NULL),1,my_out);
 				if (ft_strlen(li->buf) > 0)
+				{
 					ft_putchar(li->tmp[0]);
+					ft_add_history(li->hist, li->buf);
+					li->hist = li->shist;
+//					ft_putstr("\n\n\n");
+//					ft_putstr(li->hist);
+				}
+				
 				ft_putendl(li->buf);
-				ft_cursor_end(li->cursor, li->len_max);
+				//ft_cursor_end(li->cursor, li->len_max);
 				li->len_max = 0;
 				li->cursor = 0;
 				ft_putstr("$> ");
@@ -204,13 +217,13 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 					//tputs(tgetstr("cd", NULL),1,my_out);
 
 					ft_insert(li->buf, li->cursor, li->letter);
-					ft_print_buf(li->buf, li->cursor, li->len_max, p);
+					ft_print_buf(li->buf, li->cursor, li->len_max);
 					//tputs(tgetstr("rc", NULL),1,my_out);
 
 				}
 			}
 
-			ft_bzero(li->tmp,3);
+			ft_bzero(li->tmp,5);
 		}
 		else
 			ft_putendl("error read");

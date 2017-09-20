@@ -6,7 +6,21 @@ int ft_handle_key_code(t_line *li)
 	int i;
 
 	i = 0;
-	if (TMPF0)
+	/*ft_putnbr(li->tmp[0]);
+			ft_putchar(' ');
+			ft_putnbr(li->tmp[1]);
+			ft_putchar(' ');
+			ft_putnbr(li->tmp[2]);
+			ft_putchar(' ');
+			ft_putnbr(li->tmp[3]);
+			ft_putchar(' ');
+			ft_putnbr(li->tmp[4]);
+	*/	
+	if ( li->tmp[3] == 126)
+		li->cursor = ft_handle_fn(li->tmp, li->cursor, li->len_max);
+	else if (li->tmp[0] < 25 && li->tmp[1] == 0)
+		ft_handle_ctrl(li);
+	else if (TMPF0)
 	{
 		if (RIGHT && (li->cursor < li->len_max))
 		{
@@ -37,17 +51,19 @@ int ft_handle_key_code(t_line *li)
 
 				tputs(tgetstr("le", NULL),1,my_out);
 				li->cursor--;
-			}
+			}	
 		}
+		else if (UP)
+			ft_print_next_histo(li->hist);
 		else if (li->tmp[1] == 27)
 		{
 			ft_handle_alt(li);
-/*			ft_putnbr(li->tmp[1]);
+			ft_putnbr(li->tmp[0]);
+			ft_putnbr(li->tmp[1]);
 			ft_putnbr(li->tmp[2]);
 			ft_putnbr(li->tmp[3]);
-			ft_putnbr(li->tmp[4]);*/
+			ft_putnbr(li->tmp[4]);
 		}
-
 	}
 	return (li->cursor);
 }
@@ -64,7 +80,7 @@ void debug(char *filename, char *print)
 	ft_bzero(str,2000);
 }
 
-void ft_print_buf(char *buf, int cursor, int len_max, t_point *p)
+void ft_print_buf(char *buf, int cursor, int len_max)
 {
 	t_point *point;
 	int line;
@@ -109,11 +125,20 @@ void ft_print_buf(char *buf, int cursor, int len_max, t_point *p)
 
 }
 
-int	ft_cursor_end(int cursor, int len_max)
+int ft_handle_fn(char *tmp, int cursor, int len_max)
 {
-	while (cursor < len_max)
+	int res;
+
+	res = 0;
+	if (FN_U)
 	{
-		ft_move_cursor_right();
-		cursor++;
+		//ft_putstr("gg");
+		res = ft_cursor_start(cursor);
 	}
+	else if (FN_D)
+	{
+		//ft_putstr("hh");
+		res = ft_cursor_end(cursor, len_max);
+	}
+	return (res);
 }

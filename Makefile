@@ -49,7 +49,9 @@ SRCSFILES = main.c \
 	termios.c \
 	termios_size_win.c \
 	move_cursor.c \
-	termios_cursor.c
+	termios_cursor.c \
+	handle_ctrl.c \
+	history.c
 
 SRC = $(addprefix $(SRCPATH)/,$(SRCSFILES))
 OBJECTS = $(SRC:$(SRCPATH)/%.c=$(OBJPATH)/%.o)
