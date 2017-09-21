@@ -54,7 +54,9 @@ int ft_handle_key_code(t_line *li)
 			}	
 		}
 		else if (UP)
-			ft_print_next_histo(li->hist);
+			li->hist = ft_print_next_histo(li->hist, li);
+		else if (DOWN)
+			li->hist = ft_print_prev_histo(li->hist, li);
 		else if (li->tmp[1] == 27)
 		{
 			ft_handle_alt(li);
@@ -122,6 +124,53 @@ void ft_print_buf(char *buf, int cursor, int len_max)
 	}
 
 	tputs(tgetstr("im", NULL),1,my_out);
+
+}
+
+void ft_print_all_buf(char *buf, int cursor, int len_max)
+{
+	t_point *point;
+	int line;
+	
+	line =1;
+	tputs(tgetstr("ei", NULL),1,my_out);
+	point = ft_get_cursor();
+
+	ft_cursor_start(cursor);
+	while (cursor < len_max)
+	{
+		point = ft_get_cursor();
+		if (point->x == ft_get_win_x())
+		{
+			tputs(tgetstr("cd", NULL),1,my_out);
+			if (ft_get_cursor()->y == ft_get_win_y())
+			{
+				line++;
+				tputs(tgetstr("sf", NULL),1,my_out);
+			}
+			else
+				ft_putchar_fd('\n',0);
+			//i++;
+		}
+		free(point);
+		ft_putchar_fd(buf[cursor],0);
+		cursor++;
+	}
+	/* ** if no sf line == 1 just rc ** */
+	/*
+	if (line == 1)
+		tputs(tgetstr("rc", NULL),1,my_out);
+	else if (line > 1)
+	{
+		tputs(tgetstr("rc", NULL),1,my_out);
+		while (line != 1)
+		{
+			tputs(tgetstr("up", NULL),1,my_out);
+			line--;
+		}
+	}
+	*/
+//	tputs(tgetstr("im", NULL),1,my_out);
 
 }
 

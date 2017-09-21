@@ -142,10 +142,8 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 	
 	li = (t_line *)malloc(sizeof(t_line));
 	li->cursor = 0;
-	li->shist = (t_hist *)malloc(sizeof(t_hist));
-	li->shist->line = NULL;
-	li->shist->next = NULL;
-	li->hist = li->shist;
+	li->hist = ft_init_histo();
+
 	li->cut = NULL;
 	li->len_max = 0;
 	(void)path;
@@ -176,15 +174,24 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 		    if ( li->tmp[0] == '\r' || li->tmp[0] == '\n')
 			{
 				if (ft_strncmp(li->buf, "exit", 5) == 0)
+				{
+					while (li->hist && li->hist)
 					ft_exit(group);
+				}
 				tputs(tgetstr("rc", NULL),1,my_out);
 				if (ft_strlen(li->buf) > 0)
 				{
 					ft_putchar(li->tmp[0]);
-					ft_add_history(li->hist, li->buf);
-					li->hist = li->shist;
+					li->hist = ft_add_history(li->hist, li->buf);
+//					ft_roll_back_histo(li->hist);
+					    if (li->hist != NULL)
+							while (li->hist->next != NULL)
+								li->hist = li->hist->next;
+//					ft_putstr(li->hist->line);
+//					li->hist = li->shist;
+					
 //					ft_putstr("\n\n\n");
-//					ft_putstr(li->hist);
+
 				}
 				
 				ft_putendl(li->buf);
