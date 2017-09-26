@@ -4,6 +4,7 @@
 #include "libft/libft.h"
 #include "get_next_line.h"
 #include "sig_term.h"
+#include "parser/parser.h"
 #include <dirent.h>
 #include <stdio.h>
 #include <unistd.h>

@@ -51,7 +51,11 @@ SRCSFILES = main.c \
 	move_cursor.c \
 	termios_cursor.c \
 	handle_ctrl.c \
-	history.c
+	history.c \
+	parser/parse_tools.c \
+	parser/parse_zero.c \
+	parser/quot.c \
+	parser/parse.c
 
 SRC = $(addprefix $(SRCPATH)/,$(SRCSFILES))
 OBJECTS = $(SRC:$(SRCPATH)/%.c=$(OBJPATH)/%.o)
