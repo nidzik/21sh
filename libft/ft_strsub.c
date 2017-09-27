@@ -12,6 +12,39 @@
 
 #include "libft.h"
 
+
+
+
+char	*ft_strsub(char const *s1, unsigned int start, size_t len)
+{
+	char	*strsub;
+	int		i;
+
+	if (s1)
+	{
+		i = 0;
+		if (start > ft_strlen(s1))
+			return (NULL);
+		if (!(strsub = (char *)malloc(sizeof(char) * (len + 1))))
+			return (NULL);
+		while (start < len && s1[start])
+		{
+			strsub[i] = s1[start];
+			start++;
+			i++;
+		}
+		strsub[i] = '\0';
+		return (strsub);
+	}
+	else
+		return (NULL);
+}
+
+/*
+
+
+
+
 char		*ft_strsub(char const *s1, unsigned int start, size_t len)
 {
 	unsigned int	i;
@@ -35,3 +68,4 @@ char		*ft_strsub(char const *s1, unsigned int start, size_t len)
 	else
 		return (NULL);
 }
+*/

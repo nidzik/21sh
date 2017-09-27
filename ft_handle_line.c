@@ -1,5 +1,6 @@
 #include "minishell.h"
 #include "sig_term.h"
+#include "parser/parser.h"
 
 static char *find_cmd_in_path(char *cmd, t_path *path)
 {
@@ -119,33 +120,42 @@ char	*ft_strrncpy(char *dst, char *src, size_t n)
 	dst[i] = '\0';
 	return (dst);
 }
+
 char *ft_insert(char *string, int pos_cursor, char letter)
 {
 	char tmp[1024];
 	char *let;
 	int i;
 	char * save;
-	save = string;
+	
+	save = ft_strdup(string);
 	i = 0;
 	let = &letter;
 //	tmp = malloc(1024 * sizeof(char));
 	ft_bzero(tmp,1024);
-	ft_strncpy(tmp, string, 1024);
+	ft_strncpy(tmp, save, 1024);
 	string[pos_cursor-1] = letter;
-	ft_strrncpy(string,tmp,pos_cursor-1);
-	return string;
+	ft_strrncpy(save,tmp,pos_cursor-1);
+	return (save);
 }
+
 void ft_handle_line(t_built *built, t_group *group, t_path *path)
 {
 	t_line *li;
 	t_point *p;
-	
+	t_exec *exec;
+	t_term *term;
+
+	term = NULL;
+	exec = NULL;
 	li = (t_line *)malloc(sizeof(t_line));
 	li->cursor = 0;
 	li->hist = ft_init_histo();
-
+	li->enter = 0;
 	li->cut = NULL;
 	li->len_max = 0;
+	term = init_term(term);
+	term->hist = li->hist;
 	(void)path;
 	(void)built;
 	li->buf = malloc(1024 * sizeof(char));
@@ -155,7 +165,27 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 	p = ft_get_cursor();
 	while(42)
 	{
-		ft_read_char(li);
+		li = ft_read_char(li, group, term);
+		if (li->enter == 1)
+		{
+//			ft_putstr("coucocu");
+//			term->line = ft_strdup(li->buf);
+//			ft_putstr("::");
+//			ft_putendl(term->line);
+			term->li = li;
+			exec = ft_cmd_parcing(term);
+			while (exec != NULL)
+			{
+				while (exec->quot != NULL)
+				{
+					ft_putendl(exec->quot->arg);
+					exec->quot = exec->quot->next;
+				}
+//				ft_print_array(exec->cmd);
+				exec = exec->next;
+			}
+			li->enter = 0;
+		}
 /*		if ((li->r = read(0,li->tmp, 4)) >=0)
 		{
 	

@@ -11,8 +11,11 @@ void	ft_dquot(t_term *term, t_exec *exe)
 	while (!ft_strchr(&term->quot[term->i], 34))
 	{
 		ft_putstr("dquote> ");
-		term->hty = ft_get_command(term, term->hty);
+		term->li = ft_read_char2(term->li, NULL, term);
+
+//		term->hty = ft_get_command(term, term->hty);
 		tmp = ft_strjoin(term->quot, term->line);
+
 		ft_strdel(&(term->quot));
 		ft_strdel(&(term->line));
 		if (!ft_strchr(&tmp[term->i], 34))
@@ -32,6 +35,7 @@ void	ft_dquot(t_term *term, t_exec *exe)
 		}
 		ft_strdel(&tmp);
 	}
+
 	ft_strdel(&(term->quot));
 }
 
@@ -45,7 +49,7 @@ void	ft_quot(t_term *term, t_exec *exe)
 	while (!ft_strchr(&term->quot[term->i], 39))
 	{
 		ft_putstr("quote> ");
-//		term->li = ft_read_char(term->, term->li);
+		 term->li = ft_read_char2(term->li, NULL, term);
 		tmp = ft_strjoin(term->quot, term->line);
 		ft_strdel(&(term->quot));
 		ft_strdel(&(term->line));

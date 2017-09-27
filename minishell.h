@@ -1,5 +1,5 @@
-#ifndef MINI_H
-# define MINI_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 #include "libft/libft.h"
 #include "get_next_line.h"
@@ -115,6 +115,7 @@ typedef struct			s_line
     int					cursor;
     int					len_max;
 	char				*cut;
+	int					enter;
     char				letter;
 	t_hist				*hist;
 	t_hist				*shist;
@@ -135,7 +136,10 @@ void                    replace_value_in_env(t_env *e, char *name, char * new_va
 char                    *find_value_in_env(t_env *e, char *name);
 char    				**ft_list_to_tab(t_env *e);
 void					ft_handle_line(t_built *built, t_group *group, t_path *path);
-t_list      			*ft_add_into_buf(t_list *li);
+t_line 					*ft_read_char(t_line *li, t_group *g, t_term *term);
+t_line 					*ft_read_char2(t_line *li, t_group *g, t_term *term);
+//t_list      			*ft_add_into_buf(t_list *li);
+
 int						ft_handle_key_code(t_line *li);
 void					ft_handle_alt(t_line *li);
 void					ft_handle_alt_r(t_line *li);

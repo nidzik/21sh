@@ -19,6 +19,8 @@ t_exec	*ft_get_arg(t_term *term, t_exec *exe)
 {
 	term->p[0] = term->i;
 //	ft_printf(0, "[%i]", term->p[0]);
+
+								
 	while (ft_isprint(term->line[term->i]) && term->line[term->i] != ' ' &&\
 		term->line[term->i] != '\t' && term->line[term->i] != ';' &&\
 		term->line[term->i] != '|' && term->line[term->i] != '&' &&\
@@ -82,7 +84,8 @@ t_exec	*ft_num_redirection(t_term *term, t_exec *exe)
 			ft_simple_redirection(term, exe);
 	}
 	else
-		ft_printf(2, "shell: parse error\n");
+//		ft_printf(2, "shell: parse error\n");
+		ft_putstr_fd("shell: parse error\n", 2);
 	return (exe);
 }
 
@@ -97,6 +100,7 @@ t_exec	*ft_parse_quot(t_term *term)
 	exe->quot = NULL;
 	while (term->line[term->i] != 0)
 	{
+//									ft_putstr("coucou");
 		if (term->line[term->i] == 34 || term->line[term->i] == 39)
 			s = ft_quot_separation(term, s);
 		else if (term->line[term->i] == ';')
@@ -119,7 +123,9 @@ t_exec	*ft_parse_quot(t_term *term)
 		else
 			term->i++;
 	}
+	
 	s->cmd = ft_cmd_building(term, s);
+//	ft_putstr("coucou");
 //	ft_free_quote(exe->quot);
 	return (exe);
 }
@@ -133,10 +139,14 @@ t_exec  *ft_cmd_parcing(t_term *term)
 
 	exe = NULL;
 	split = NULL;
+
 	if (term->line != NULL && term->line[0] != '\0')
 	{
+		
 //		if (ft_strchr(term->line, 34) || ft_strchr(term->line, 39))
+
 			exe = ft_parse_quot(term);
+
 			i = 0;
 			s = exe;
 			while (s != NULL)
@@ -145,12 +155,14 @@ t_exec  *ft_cmd_parcing(t_term *term)
 				if (s->cmd != NULL)
 					while (s->cmd[i] != NULL)
 					{
-						ft_printf(0, "[%i:%s]", i, s->cmd[i]);
+//						ft_putstr("coucou");
+						printf("[%i:%s]", i, s->cmd[i]);fflush(stdout);
 						i++;
 					}
 				ft_putstr("\\n\n");
 				s = s->next;
 			}
+
 //		ft_printf(0, "[%s]", exe->quot->arg);
 /*
 		else

@@ -53,10 +53,10 @@ t_exec	*ft_simple_redirection(t_term *term, t_exec *exe)
 	term->p[0] = term->i;
 	term->p[1] = ++term->i;
 	exe = ft_get_arg(term, exe);
-	if (term->line[term->i] == '>')
-		exe = ft_right_redirection(term, exe);
-	else
-		exe = ft_left_redirection(term, exe);
+	if (term->line[term->i] == '>');
+//		exe = ft_right_redirection(term, exe);
+	else;
+	//exe = ft_left_redirection(term, exe);
 	return (exe);
 }
 

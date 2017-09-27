@@ -3,14 +3,14 @@
 
 typedef struct	s_term
 {
-  int		prompt;
-  char		*quot;
-  int		p[2];
-  int		i;
-  char		*mask;
-  char		*line;
-  struct s_hist	*hty;
-  
+	int			prompt;
+	char		*quot;
+	int			p[2];
+	int			i;
+	char		*mask;
+	char		*line;
+	struct s_hist	*hist;
+	struct s_line	*li;
 }		t_term;
 
 /*typedef struct		s_hist
@@ -37,6 +37,10 @@ typedef struct		s_exec
 }			t_exec;
 
 
+/*
+**	init term
+*/
+t_term			*init_term(t_term *t);
 /*
 **parse
 */
