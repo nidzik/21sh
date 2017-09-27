@@ -155,9 +155,10 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 	p = ft_get_cursor();
 	while(42)
 	{
-		if ((li->r = read(0,li->tmp, 4)) >=0)
+		ft_read_char(li);
+/*		if ((li->r = read(0,li->tmp, 4)) >=0)
 		{
-
+	
 			li->cursor = ft_handle_key_code(li);
 			// *** GO TO INSERT MODE ***
 			if (li->cursor != li->len_max)
@@ -229,11 +230,11 @@ void ft_handle_line(t_built *built, t_group *group, t_path *path)
 
 				}
 			}
-
+			
 			ft_bzero(li->tmp,5);
 		}
 		else
-			ft_putendl("error read");
+		ft_putendl("error read");*/
 	}
 }
 

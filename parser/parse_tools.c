@@ -1,3 +1,4 @@
+#include "parser.h"
 #include "minishell.h"
 
 int		ft_listsize_quot(t_quot *quot)

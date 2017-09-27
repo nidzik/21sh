@@ -135,6 +135,7 @@ void                    replace_value_in_env(t_env *e, char *name, char * new_va
 char                    *find_value_in_env(t_env *e, char *name);
 char    				**ft_list_to_tab(t_env *e);
 void					ft_handle_line(t_built *built, t_group *group, t_path *path);
+t_list      			*ft_add_into_buf(t_list *li);
 int						ft_handle_key_code(t_line *li);
 void					ft_handle_alt(t_line *li);
 void					ft_handle_alt_r(t_line *li);
@@ -145,12 +146,14 @@ int						ft_handle_ctrl(t_line *li);
 void					ft_ctrl_k(t_line *li);
 void					ft_ctrl_y(t_line *li);
 int						ft_handle_fn(char *tmp, int cursor, int len_max);
+
 char					*ft_insert(char *string, int pos_cursor, char letter);
 int						ft_parse_line(char *line, t_parse *parse);
 int						ft_stock_delimitors(char *line, t_parse *parse);
 t_parse					*ft_init_parse_struct(void);
 void					ft_print_buf(char *buf, int cursor, int len_max);
 void					ft_print_all_buf(char *buf, int cursor, int len_max);
+
 void					ft_exit(t_group *g);
 void					ft_free_env(t_env *e);
 void                    ft_error(char *str);

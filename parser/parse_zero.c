@@ -1,3 +1,4 @@
+#include "parser.h"
 #include "minishell.h"
 
 t_exec  *ft_push_mask_v1(t_term *term, t_exec *exe, char *str)

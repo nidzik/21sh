@@ -1,3 +1,4 @@
+#include "parser.h"
 #include "minishell.h"
 
 void	ft_dquot(t_term *term, t_exec *exe)
@@ -44,7 +45,7 @@ void	ft_quot(t_term *term, t_exec *exe)
 	while (!ft_strchr(&term->quot[term->i], 39))
 	{
 		ft_putstr("quote> ");
-		term->hty = ft_get_command(term, term->hty);
+//		term->li = ft_read_char(term->, term->li);
 		tmp = ft_strjoin(term->quot, term->line);
 		ft_strdel(&(term->quot));
 		ft_strdel(&(term->line));

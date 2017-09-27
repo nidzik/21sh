@@ -1,5 +1,5 @@
-#ifndef "PARSER_H"
-#define "PARSER_H"
+#ifndef PARSER_H
+#define PARSER_H
 
 typedef struct	s_term
 {
@@ -13,13 +13,13 @@ typedef struct	s_term
   
 }		t_term;
 
-typedef struct		s_hist
+/*typedef struct		s_hist
 {
 	char		*line;
 	struct s_hist	*next;
 	struct s_hist	*prev;
 }			t_hist;
-
+*/
 typedef struct		s_quot
 {
 	char		*arg;
@@ -75,5 +75,6 @@ t_exec		*ft_build_quot(t_term *term, t_exec *exe);
 void		ft_dquot(t_term *term, t_exec *exe);
 void		ft_quot(t_term *term, t_exec *exe);
 
+//t_hist *ft_get_command(t_term *term, t_hist *h);
 #endif
 
