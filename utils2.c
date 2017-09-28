@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int ft_handle_key_code(t_line *li)
+t_line *ft_handle_key_code(t_line *li)
 {
 	t_point *cursor_pos;
 	int i;
@@ -67,7 +67,7 @@ int ft_handle_key_code(t_line *li)
 			ft_putnbr(li->tmp[4]);
 		}
 	}
-	return (li->cursor);
+	return (li);
 }
 
 void debug(char *filename, char *print)

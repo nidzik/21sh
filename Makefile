@@ -57,7 +57,8 @@ SRCSFILES = main.c \
 	parser/quot.c \
 	parser/parse.c \
 	parser/utils_parser.c \
-	read_line.c
+	read_line.c \
+	handle_tab.c
 
 SRC = $(addprefix $(SRCPATH)/,$(SRCSFILES))
 OBJECTS = $(SRC:$(SRCPATH)/%.c=$(OBJPATH)/%.o)

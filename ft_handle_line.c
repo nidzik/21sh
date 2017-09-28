@@ -134,7 +134,7 @@ char *ft_insert(char *string, int pos_cursor, char letter)
 //	tmp = malloc(1024 * sizeof(char));
 	ft_bzero(tmp,1024);
 	ft_strncpy(tmp, save, 1024);
-	string[pos_cursor-1] = letter;
+	save[pos_cursor-1] = letter;
 	ft_strrncpy(save,tmp,pos_cursor-1);
 	return (save);
 }

@@ -156,10 +156,10 @@ t_exec  *ft_cmd_parcing(t_term *term)
 					while (s->cmd[i] != NULL)
 					{
 //						ft_putstr("coucou");
-						printf("[%i:%s]", i, s->cmd[i]);fflush(stdout);
+//						printf("[%i:%s]", i, s->cmd[i]);fflush(stdout);
 						i++;
 					}
-				ft_putstr("\\n\n");
+//				ft_putstr("\\n\n");
 				s = s->next;
 			}
 

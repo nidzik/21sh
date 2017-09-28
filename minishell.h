@@ -140,7 +140,7 @@ t_line 					*ft_read_char(t_line *li, t_group *g, t_term *term);
 t_line 					*ft_read_char2(t_line *li, t_group *g, t_term *term);
 //t_list      			*ft_add_into_buf(t_list *li);
 
-int						ft_handle_key_code(t_line *li);
+t_line				   	*ft_handle_key_code(t_line *li);
 void					ft_handle_alt(t_line *li);
 void					ft_handle_alt_r(t_line *li);
 void					ft_handle_alt_l(t_line *li);
@@ -150,7 +150,7 @@ int						ft_handle_ctrl(t_line *li);
 void					ft_ctrl_k(t_line *li);
 void					ft_ctrl_y(t_line *li);
 int						ft_handle_fn(char *tmp, int cursor, int len_max);
-
+t_line 					*ft_tab(t_line *li);
 char					*ft_insert(char *string, int pos_cursor, char letter);
 int						ft_parse_line(char *line, t_parse *parse);
 int						ft_stock_delimitors(char *line, t_parse *parse);

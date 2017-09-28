@@ -70,7 +70,7 @@ t_line *ft_read_char(t_line *li, t_group *g, t_term *term)
 //	struct s_term term;
 	if ((li->r = read(0,li->tmp, 4)) >=0)
 	{
-		li->cursor = ft_handle_key_code(li);
+		li = ft_handle_key_code(li);
 		ft_go_insert(li->cursor, li->len_max);
 		// *** HANDLE CTRL D = '\04' ***                              
 		if (li->tmp[0] == EOF || li->tmp[0] == '\04')
@@ -82,11 +82,13 @@ t_line *ft_read_char(t_line *li, t_group *g, t_term *term)
 			ft_bzero(li->buf, 1024);
 			li->enter = 1;
 		}
-		else if ((ft_isascii(li->tmp[0]) == 1 || SPACE || \
-				  li->tmp[0] == '\t'))
+		else if (li->tmp[0] == '\t')
+		{
+			li = ft_tab(li);
+		}
+		else if ((ft_isprint(li->tmp[0]) == 1 || SPACE))
 		{
 			li = ft_add_into_buf(li);
-
 		}
 		ft_bzero(li->tmp,5);
 
@@ -104,7 +106,7 @@ t_line *ft_read_char2(t_line *li, t_group *g, t_term *term)
 	{
 		if ((li->r = read(0,li->tmp, 4)) >=0)
 		{
-			li->cursor = ft_handle_key_code(li);
+			li = ft_handle_key_code(li);
 			ft_go_insert(li->cursor, li->len_max);
 			// *** HANDLE CTRL D = '\04' ***
 			if (li->tmp[0] == EOF || li->tmp[0] == '\04')
@@ -117,11 +119,13 @@ t_line *ft_read_char2(t_line *li, t_group *g, t_term *term)
 				li->enter = 1;
 				break;
 			}
-			else if ((ft_isascii(li->tmp[0]) == 1 || SPACE || \
-					  li->tmp[0] == '\t'))
+			else if ((ft_isascii(li->tmp[0]) == 1 || SPACE))
 			{
 				li = ft_add_into_buf(li);
-
+			}
+			else if (li->tmp[0] == '\t')
+			{
+				li = ft_tab(li);
 			}
 			ft_bzero(li->tmp,5);
 
