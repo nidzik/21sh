@@ -13,6 +13,36 @@
 #include "glob.h"
 #include "../minishell.h"
 //#include "dirent.h"
+typedef struct		s_dir
+{
+	char			*name;
+	int				match;
+	struct s_dir	*next;
+}					t_dir;
+
+t_dir				*ft_list_file_check(void)
+{
+    DIR             *d;
+    struct dirent   *dir;
+	t_dir 			*my_dir;
+
+	my_dir = (t_dir *)malloc(sizeof(t_dir));
+	mydir->name = NULL;
+	my_dir->next = NULL;
+    if ((d = opendir(".")) == NULL )
+        return (NULL);
+    while ((dir = readdir(d)) != NULL)
+    {
+        if (dir->d_name[0] != '.')
+        {
+			my_dir = ft_strdup(dir->d_name);
+			
+        }
+    }
+    closedir(d);
+    return (my_dir);
+}
+
 char				*ft_list_file(void)
 {
 	DIR				*d;
@@ -20,6 +50,7 @@ char				*ft_list_file(void)
 	char 			*list;
 	char			*ret;
 	char			*tmp;
+	
 	tmp = NULL;
 	ret = NULL;
 	list = NULL;
@@ -62,7 +93,7 @@ char *ft_star_alone(char *fresh, int i)
 	list_files = NULL;
 	if (fresh[i] == '*' && (i > 0 && fresh[i - 1] == ' ') \
 		&& (fresh[i + 1] == '\0' || fresh[i + 1] == ' ') \
-		&& (fresh[i - 1] != '\\'))
+		&& (i > 0 && fresh[i - 1] != '\\'))
 	{
 		left = ft_strsub(fresh, 0, i);
 		right = ft_strsub(fresh, i + 1, ft_strlen(fresh));
@@ -77,28 +108,31 @@ char *ft_star_alone(char *fresh, int i)
 char *ft_star_before(char * fresh, int i)
 {
 	char *final;
-	char word[256];
-	
-	final = NULL;
+	char *woord;
+	int i_save;
+	char *new_file;
+	t_dir dir;
 
+	dir = NULL
+	final = NULL;
+	woord = NULL;
+	i_save = i + 1;
 	if (fresh[i] == '*' && ( i > 0 && fresh[i - 1] == ' ') \
 		&& (fresh[i + 1] != ' ') \
-		&& fresh[i - 1] != '\\')
+		&& (i == 0 || fresh[i - 1] != '\\'))
 	{
-		ft_putendl(fresh);
-		ft_putnbr(i);
-		ft_bzero(word, 256);
-		while (fresh[i] != ' ' && fresh[i] != 0)
-		{
-			ft_putchar(fresh[i]);
-			word[i] = fresh[i];
+		while (fresh[i] != ' ' && fresh[i] != '\0')
 			i++;
-		}
-		ft_putendl(word);
-		ft_putstr("gg");
+		woord = ft_strsub(fresh, i_save, i);
+		dir = ft_list_file_check();
+		while 
+//		new_file = ft_strdup(ft_strstr());
+
+			ft_putendl(woord);
 	}
 	return (final);
 }
+
 int main(int ac, char **av)
 {
 	char *fresh;
