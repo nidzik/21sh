@@ -1,10 +1,6 @@
 #include "../../minishell.h"
-typedef struct 		s_list
-{
-	char *str;
-	int pos;
-	struct s_list *next;
-}					t_list;
+#include "glob2.h"
+
 int strlchr(char *s1, char *s2, int pos)
 {
 	if (s1 != NULL)
@@ -13,109 +9,127 @@ int strlchr(char *s1, char *s2, int pos)
 		
 		s1++;
 	}
-}
-int ft_search_slash(char *s1, int i)
-{
-	int j;
-
-	j = 0;
-	if (i != 0)
-	{
-		while (i > 0)
-		{
-			j++;
-			i--;
-			if (s1[i] == '/' || i == 0)
-				return (j);
-		}
-	}
-	else
-		return (1);
-	return (j);
+	return (0);
 }
 
-t_list *init_list(t_list *list)
-{
-	list = malloc(sizeof(t_list));
-	list->str = NULL;
-	lis->pos = pos;
-	return (list);
-}
-t_list *ft_add_list(t_list *l, t_list *l2)
-{
-	t_list *save;
-
-	save = l;
-	if (l == NULL)
-		return (l2);
-	else if (l2 == NULL)
-		return (l);)
-	while (l->next != NULL)
-		l = l=>next;
-	l->next = l2;
-	return (save);
-}
-t_list *ft_sort_list_del(t_list *l)
-{
-	t_list *save;
-
-	save = l;
-	while (l != NULL)
-	{
-		if 
-		l = l->next;
-	}
-	return (save);
-}
 // TODO struct with arg pos directory
-void ft_handle_star(char *arg, int pos,t_list *list, char *directory)
+t_core *ft_handle_star(t_core *core)
 {
+		ft_putendl("handle star");
 	ft_putendl("handle star");
-	if (ft_search_slach(arg, pos) == 1)
-		list = ft_add_list(list, ft_files_to_list(directory));
-	else if (ft_search_slach(arg, pos) > 1)
-		pos++;
-
-	return;
+	if (ft_search_slash(core->arg, core->pos) == 0)
+	{
+		ft_putstr("here");
+		ft_putnbr(ft_search_slash(core->arg, core->pos));
+		core->list = ft_add_list(core->list, ft_files_to_list(core->directory));
+		core->pos++;
+		sleep(1);
+	}
+	else if (ft_search_slash(core->arg, core->pos) == -1)
+	{
+		core->pos++;
+		ft_putstr("++");
+	}
+	
+	return (core);
 }
-ft_handle_other();
+
+t_core *ft_handle_other(t_core *core)
+{
+	t_listt *save;
+	t_listt *prev;
+
+	ft_putendl("handle other");
+	prev = NULL;
+	save = core->list;
+	if (core->prev == '*')
+		while (core->list != NULL)
+		{
+			ft_putstr("prev=*");
+			if (ft_strchr(core->list->str, core->arg[core->pos]) != NULL)
+			{
+				core->list->pos = mystrchr(core->list->str, core->arg[core->pos]);
+			}
+			else
+			{
+				core->list = ft_list_del(core->list, prev);
+			}
+			core->list = prev;
+			core->list = core->list->next;
+		}
+	else if (core->pos == 0 || ft_search_slash(core->list->str, core->pos) == 1)
+	{
+		core->list = ft_add_list(core->list, ft_files_to_list_char(core->directory, core->arg[core->pos], core->pos));
+		ft_putendl("pass");
+	}
+	
+
+/*    while (core->list != NULL)
+    {
+        ft_putendl(core->list->str);
+        core->list = core->list->next;
+	}
+*/	
+	core->pos++;
+//	core->list = save;
+	return (core);
+}
+
+t_core *init_core(char *arg)
+{
+	t_core *core;
+
+	ft_putendl("init core");
+	core = malloc(sizeof(t_core));
+	if (core == NULL)
+		return (NULL);
+	core->arg = ft_strdup(arg);
+	core->list = NULL;
+	core->pos = 0;
+	core->prev = '\0';
+	if (arg[0] == '/')
+        core->directory = ft_strdup("/");
+    else
+        core->directory = ft_strdup(".");
+	return (core);
+}
+
 int main(int ac, char **av)
 {
-	char *arg;
-	char *directory;
-	t_list *list;
-	int i;
-	
-	i= 0;
+	t_core *core = NULL;
+
 	if (ac != 2)
 		return (0);
-	arg = ft_strdup(av[1]);
-	list = 
-	if (arg[0] == '/')
-		directory = ft_strdup("/");
-	else
-		directory = ft_strdup(".");
-	while (arg[i] != '\0')
+
+	core = init_core(av[1]);
+	while (core->arg[core->pos] != '\0')
 	{
-		if (arg[i] == '*')
-			ft_handle_star(arg, i, list, directory);
-		else if (arg[i] == '?')
-			ft_handle
-		else if (arg[i] == '[')
-
-		else if (arg[i] == '{')
-
-		else if (arg[i] == ']')
-
-		else if (arg[i] == '}')
-			
-		else if (arg[i] != '/')
-
+		ft_putendl("boucle");
+		ft_putendl(core->arg);
+		if (core->arg[core->pos] == '*')
+			core = ft_handle_star(core);
+		else if (core->arg[core->pos] == '?')
+			;
+		else if (core->arg[core->pos] == '[')
+			;
+		else if (core->arg[core->pos] == '{')
+			;
+		else if (core->arg[core->pos] == ']')
+			;
+		else if (core->arg[core->pos] == '}')
+			;
+//		else if (core->arg[core->pos] != '/')
+//			;
 		else 
-			ft_handle_other(arg, i);
+			core = ft_handle_other(core);
 	}
 
-		
-	ft_strdel(arg);
+	while (core->list != NULL)
+    {
+		if (core->list->str)
+        ft_putendl(core->list->str);
+        core->list = core->list->next;
+	}		
+	ft_strdel(&(core->arg));
 	return (0);
 }
