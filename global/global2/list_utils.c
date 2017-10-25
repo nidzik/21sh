@@ -6,6 +6,7 @@ t_core *ft_sort_list_del(t_core *core)
     t_listt *save;
 	int i;
 
+	ft_putendl("ft sort list del ");
 	i = core->list->pos;
     save = core->list;
 	while (core->list->str[i] != '\0')
@@ -27,20 +28,46 @@ t_core *ft_sort_list_del(t_core *core)
 //		ft_strdellist();
     return (core);
 }
-
+void printl(t_listt *l2)
+{
+	t_listt *l1 = l2;
+	
+	ft_putendl("printl");
+	if (l1 == NULL)
+		ft_putendl("l1 null");
+	while (l1 != NULL)
+	{
+		if (l1->str == NULL)
+			ft_putendl("NULL");
+		else
+			ft_putendl(l1->str);
+		l1 = l1->next;
+	}
+}
 t_listt *ft_list_del(t_listt *l1, t_listt *prev)
 {
 	t_listt *tmp;
+		t_listt *save;
 
+		save = l1;
+		
+
+	ft_putendl("ft_list_del");
+//	save = l1;
+//	printl(save);
 	tmp = NULL;
 	if (prev == NULL)
 	{
 		tmp = l1->next;
-		ft_strdel(&(l1->str));
+				ft_putendl("del prev == NULL");
+//				if (l1 != NULL && l1->str != NULL)
+//		ft_strdel(&(l1->str));
+		ft_putendl("del prev == NULL");
 		free(l1);
 		return (tmp);
 	}
 	prev->next = l1->next;
+				ft_putendl("del prev non NULL");
 	ft_strdel(&(l1->str));
 	free(l1);
 	return (prev);
@@ -65,9 +92,9 @@ int ft_search_slash(char *s1, int i)
     int j;
 
 	if (i == 0 || s1[i] != '/')
-		return (-1);
+		return (0);
 	else 
-		return 0;
+		return (-1);
 /*
     j = 0;
     if (i != 0)

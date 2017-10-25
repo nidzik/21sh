@@ -3,11 +3,14 @@
 
 int strlchr(char *s1, char *s2, int pos)
 {
-	if (s1 != NULL)
-	while (*s1)
+	char *save;
+
+	save = s1;
+	if (save != NULL)
+	while (*save)
 	{
 		
-		s1++;
+		save++;
 	}
 	return (0);
 }
@@ -15,54 +18,63 @@ int strlchr(char *s1, char *s2, int pos)
 // TODO struct with arg pos directory
 t_core *ft_handle_star(t_core *core)
 {
-		ft_putendl("handle star");
 	ft_putendl("handle star");
 	if (ft_search_slash(core->arg, core->pos) == 0)
 	{
 		ft_putstr("here");
-		ft_putnbr(ft_search_slash(core->arg, core->pos));
-		core->list = ft_add_list(core->list, ft_files_to_list(core->directory));
+//		ft_putnbr(ft_search_slash(core->arg, core->pos));
+		core->list = ft_add_list(core->list, ft_files_to_list_char(core->directory, core->prev, core->pos));
 		core->pos++;
-		sleep(1);
+//		sleep(1);
 	}
 	else if (ft_search_slash(core->arg, core->pos) == -1)
 	{
 		core->pos++;
 		ft_putstr("++");
 	}
-	
+	core->prev = '*';
 	return (core);
 }
 
 t_core *ft_handle_other(t_core *core)
 {
 	t_listt *save;
+	t_core *co;
 	t_listt *prev;
 
+	co = NULL;
 	ft_putendl("handle other");
 	prev = NULL;
+	co = core;
 	save = core->list;
+		if (core->prev == 0)
+			ft_putendl("help");
 	if (core->prev == '*')
+	{
 		while (core->list != NULL)
 		{
 			ft_putstr("prev=*");
 			if (ft_strchr(core->list->str, core->arg[core->pos]) != NULL)
 			{
 				core->list->pos = mystrchr(core->list->str, core->arg[core->pos]);
+							core->list = core->list->next;
 			}
 			else
 			{
+				ft_putendl("delete in other");
 				core->list = ft_list_del(core->list, prev);
 			}
-			core->list = prev;
-			core->list = core->list->next;
+
+//			prev = core->list;
 		}
+					core->list = save;
+	}
 	else if (core->pos == 0 || ft_search_slash(core->list->str, core->pos) == 1)
 	{
 		core->list = ft_add_list(core->list, ft_files_to_list_char(core->directory, core->arg[core->pos], core->pos));
 		ft_putendl("pass");
 	}
-	
+//	printl(core->list);
 
 /*    while (core->list != NULL)
     {
@@ -97,7 +109,9 @@ t_core *init_core(char *arg)
 int main(int ac, char **av)
 {
 	t_core *core = NULL;
+	t_listt *cc = NULL;
 
+	
 	if (ac != 2)
 		return (0);
 
@@ -122,14 +136,20 @@ int main(int ac, char **av)
 //			;
 		else 
 			core = ft_handle_other(core);
-	}
 
-	while (core->list != NULL)
+	ft_putendl("print list main");
+		cc = core->list;
+				printl(cc);
+		cc = NULL;
+	}
+//hh
+/*	while (core->list != NULL)
     {
-		if (core->list->str)
+		if (core->list->str != NULL)
         ft_putendl(core->list->str);
         core->list = core->list->next;
-	}		
+		}		*/
 	ft_strdel(&(core->arg));
+	printl(core->list);
 	return (0);
 }

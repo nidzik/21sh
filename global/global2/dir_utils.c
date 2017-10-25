@@ -37,6 +37,15 @@ t_listt	*ft_files_to_list(char *directory)
 	return (list);
 }
 
+int ft_find_char(char *str, char c)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != c)
+		i++;
+	return i;
+}
 t_listt	*ft_files_to_list_char(char *directory, char c, int pos)
 {
 
@@ -55,13 +64,13 @@ t_listt	*ft_files_to_list_char(char *directory, char c, int pos)
 	while ((dir = readdir(d)) != NULL)
 	{
 
-		if (dir->d_name[0] != '.' && (ft_strlen(dir->d_name) > pos && dir->d_name[pos] == c))
+		if (dir->d_name[0] != '.' && (ft_strlen(dir->d_name) >= pos ))
 		{
 			if (list->str == NULL)
 			{
 				ft_putstr("one");
 				list->str = ft_strdup(dir->d_name);
-				list->pos = pos;
+				list->pos = ft_find_char(dir->d_name, c);;
 			}
 			else
 			{
@@ -75,10 +84,11 @@ t_listt	*ft_files_to_list_char(char *directory, char c, int pos)
 		}
 	}
 	closedir(d);
+	//	printl(save);
 	ft_putendl("end files to list ");
 
-/*	list = save;
-	while (list != NULL)
+	list = save;
+/*	while (list != NULL)
 	{
 		ft_putendl(list->str);
 		list = list->next;

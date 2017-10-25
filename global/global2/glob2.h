@@ -27,6 +27,7 @@ t_listt *ft_add_list(t_listt *l, t_listt *l2);
 int ft_search_slash(char *s1, int i);
 t_listt *init_list(t_listt *list);
 t_listt *ft_list_del(t_listt *l1, t_listt *prev);
+void printl(t_listt *l1);
 
 /* 
 ** file :: dir_utils.c 
