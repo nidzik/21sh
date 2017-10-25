@@ -63,9 +63,10 @@ t_core *ft_handle_other(t_core *core)
 			{
 				ft_putendl("delete in other");
 				core->list = ft_list_del(core->list, prev);
+//				printl(core->list);
 			}
-
-//			prev = core->list;
+			prev = core->list;
+		core->list = core->list->next;
 		}
 					core->list = save;
 	}
@@ -137,9 +138,10 @@ int main(int ac, char **av)
 		else 
 			core = ft_handle_other(core);
 
-	ft_putendl("print list main");
+	ft_putendl("\n\nprint list main");
 		cc = core->list;
 				printl(cc);
+				ft_putchar('\n');
 		cc = NULL;
 	}
 //hh
@@ -150,6 +152,6 @@ int main(int ac, char **av)
         core->list = core->list->next;
 		}		*/
 	ft_strdel(&(core->arg));
-	printl(core->list);
+//	printl(core->list);
 	return (0);
 }

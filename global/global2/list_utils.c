@@ -58,18 +58,22 @@ t_listt *ft_list_del(t_listt *l1, t_listt *prev)
 	tmp = NULL;
 	if (prev == NULL)
 	{
+		ft_putstr("if");
 		tmp = l1->next;
-				ft_putendl("del prev == NULL");
 //				if (l1 != NULL && l1->str != NULL)
 //		ft_strdel(&(l1->str));
 		ft_putendl("del prev == NULL");
 		free(l1);
 		return (tmp);
 	}
-	prev->next = l1->next;
-				ft_putendl("del prev non NULL");
-	ft_strdel(&(l1->str));
-	free(l1);
+	else
+	{
+				ft_putstr("else");
+		prev->next = l1->next;
+		ft_putendl("del prev non NULL");
+		ft_strdel(&(l1->str));
+		free(l1);
+	}
 	return (prev);
 }
 t_listt *ft_add_list(t_listt *l, t_listt *l2)
